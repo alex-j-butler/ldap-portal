@@ -97,6 +97,8 @@ func (c App) POST_ChangePassword(currentPassword string, newPassword string, con
     c.Validation.Required(confirmPassword).Message("Please confirm your new password")
     c.Validation.Required(newPassword == confirmPassword).Message("Password confirmation does not match")
 
+    c.Validation.MinSize(newPassword, 8).Message("Password must be at least 8 characters")
+
     if c.Validation.HasErrors() {
         c.Validation.Keep()
         c.FlashParams()
