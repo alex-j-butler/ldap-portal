@@ -6,10 +6,49 @@ import "fmt"
 
 type User struct {
     ID              int `sql:"AUTO_INCREMENT"`
-    UID             string
+    DN              string `gorm:"column:dn"`
+    UID             string `gorm:"column:uid"`
     GivenName       string
     Surname         string
     Email           string
+}
+
+func (u User) VerifyPassword(password string) (bool) {
+    source := LDAPSourceFromConfig(revel.Config)
+    l, err := source.DialLDAP()
+    if err != nil {
+        revel.ERROR.Fatal(err)
+        return false
+    }
+    source.BindLDAP(l)
+
+    err = l.Bind(u.DN, password)
+    if err != nil {
+        revel.ERROR.Fatal(err)
+        return false
+    }
+
+    return true
+}
+
+func (u User) ResetPassword(password string) (bool) {
+    source := LDAPSourceFromConfig(revel.Config)
+    l, err := source.DialLDAP()
+    if err != nil {
+        revel.INFO.Print(err)
+        return false
+    }
+    source.BindLDAP(l)
+
+    passwordModifyRequest := ldap.NewPasswordModifyRequest(u.DN, "", password)
+    _, err = l.PasswordModify(passwordModifyRequest)
+
+    if err != nil {
+        revel.INFO.Print(err)
+        return false
+    }
+
+    return true
 }
 
 func GetLDAPUser(username string) (User, bool) {
@@ -52,14 +91,14 @@ func GetLDAPUser(username string) (User, bool) {
             return User{}, false
         }
 
-        //dn := searchResponse.Entries[0].DN
+        dn := searchResponse.Entries[0].DN
         uid := searchResponse.Entries[0].GetAttributeValue("uid")
         givenName := searchResponse.Entries[0].GetAttributeValue("givenName")
         surname := searchResponse.Entries[0].GetAttributeValue("surname")
         mail := searchResponse.Entries[0].GetAttributeValue("mail")
 
         // Create the new user and save it to the persistent DB.
-        user = User{UID: uid, GivenName: givenName, Surname: surname, Email: mail}
+        user = User{DN: dn, UID: uid, GivenName: givenName, Surname: surname, Email: mail}
         DB.Create(&user)
 
         return user, true

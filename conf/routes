@@ -2,6 +2,7 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+module:jobs
 module:testrunner
 
 # Index
@@ -10,6 +11,8 @@ GET     /                                       App.Index
 # Account
 GET     /account                                App.Account
 POST    /account                                App.POST_Account
+GET     /change_password                        App.ChangePassword
+POST    /change_password                        App.POST_ChangePassword
 
 # Authentication
 GET     /login                                  Auth.Login

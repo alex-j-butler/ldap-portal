@@ -30,7 +30,8 @@ func (c Auth) POST_Login(username string, password string) revel.Result {
     }
 
     u, status := app.GetLDAPUser(username)
-    if status == false {
+    passwordStatus := u.VerifyPassword(password)
+    if status == false || passwordStatus == false {
         // User could not be retrieved.
         c.Flash.Error("Invalid username/password")
         return c.Redirect(Auth.Login)
