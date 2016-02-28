@@ -1,0 +1,28 @@
+{{set . "title" "My account"}}
+{{template "header.html" .}}
+
+<div class="columns">
+    <div class="column is-half is-offset-quarter">
+        <form method="POST" action="">
+            <input type="hidden" name="csrf_token" value="{{ .csrf_token }}">
+            <div class="control">
+                <input name="uid" class="input is-danger" type="text" value="{{ .u.UID }}" placeholder="Username" disabled>
+            </div>
+            <div class="control">
+                <input name="email" class="input is-danger" type="text" value="{{ .u.Mail }}" placeholder="Email address" disabled>
+            </div>
+            <div class="control">
+                <input name="givenName" class="input" type="text" value="{{ .u.GivenName }}" placeholder="First name">
+            </div>
+            <div class="control">
+                <input name="surname" class="input" type="text" value="{{ .u.Surname }}" placeholder="Surname">
+            </div>
+
+            <div class="control">
+                <input class="button is-success" type="submit" value="Save">
+            </div>
+        </form>
+    </div>
+</div>
+
+{{template "footer.html" .}}

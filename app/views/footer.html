@@ -1,0 +1,20 @@
+            </div>
+        </section>
+        <footer class="footer">
+            <div class="container">
+                <div class="content is-centered">
+                    <p>LDAP Portal by <strong>Ranndom</strong> for <a href="https://qixalite.com">Qixalite</a>.</p>
+
+                    {{if eq .RunMode "dev"}}
+                        <p>
+                        Running in <strong>development</strong> mode.
+                        </p>
+                    {{end}}
+                </div>
+        </footer>
+
+    {{if eq .RunMode "dev"}}
+        {{template "debug.html" .}}
+    {{end}}
+    </body>
+</html>

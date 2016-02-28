@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>{{.title}} | LDAP Portal</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="shortcut icon" type="image/png" href="/public/img/favicon.png">
+        <script src="/public/js/jquery-1.9.1.min.js" type="text/javascript" charset="utf-8"></script>
+        {{range .moreStyles}}
+        <link rel="stylesheet" type="text/css" href="/public/{{.}}">
+        {{end}}
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.0.15/css/bulma.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        {{range .moreScripts}}
+        <script src="/public/{{.}}" type="text/javascript" charset="utf-8"></script>
+        {{end}}
+        <script src="/public/js/flash.js" type="text/javascript" charset="utf-8"></script>
+    </head>
+    <body>
+        <section class="hero is-info is-left is-bold">
+            <div class="hero-header">
+                <header class="header has-shadow">
+                    <div class="container">
+                        {{template "navigation.html" .}}
+                    </div>
+                </header>
+            </div>
+            <div class="hero-content">
+                <div class="container">
+                    <p class="title">Account management</p>
+                    <p class="subtitle">Manage your Qixalite staff account</p>
+
+                </div>
+            </div>
+        </section>
+        <section class="section">
+            <div class="container">
+                {{template "flash.html" .}}
+                <h1 class="title">{{.title}}</h1>

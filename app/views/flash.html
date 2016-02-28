@@ -1,0 +1,22 @@
+{{append . "moreScripts" "js/flash.js"}}
+
+{{if .flash.success}}
+<div class="notification is-success">
+    <button class="delete flash-delete"></button>
+    {{.flash.success}}
+</div>
+{{end}}
+
+{{if or .errors .flash.error}}
+    {{if .flash.error}}
+        <div class="notification is-danger">
+            {{.flash.error}}
+        </div>
+    {{end}}
+    {{range .errors}}
+        <div class="notification is-danger">
+            {{.}}
+        </div>
+    {{end}}
+{{end}}
+
