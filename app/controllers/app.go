@@ -60,7 +60,7 @@ func (c App) POST_Account(givenName string, surname string) revel.Result {
     }
 
     var user app.User
-    app.DB.First(&user, &app.User{UID: c.Session["name"]})
+    app.DB.First(&user, &app.User{UID: c.Session["user"]})
 
     c.Validation.Required(givenName).Message("Please enter a first name")
     c.Validation.Required(surname).Message("Please enter a surname")

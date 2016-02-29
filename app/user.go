@@ -17,14 +17,14 @@ func (u User) VerifyPassword(password string) (bool) {
     source := LDAPSourceFromConfig(revel.Config)
     l, err := source.DialLDAP()
     if err != nil {
-        revel.ERROR.Fatal(err)
+        revel.INFO.Printf("%s", err)
         return false
     }
     source.BindLDAP(l)
 
     err = l.Bind(u.DN, password)
     if err != nil {
-        revel.ERROR.Fatal(err)
+        revel.INFO.Printf("%s", err)
         return false
     }
 
@@ -64,7 +64,7 @@ func GetLDAPUser(username string) (User, bool) {
         source := LDAPSourceFromConfig(revel.Config)
         l, err := source.DialLDAP()
         if err != nil {
-            revel.ERROR.Fatal(err)
+            revel.INFO.Printf("%s", err)
             return User{}, false
         }
         source.BindLDAP(l)
@@ -82,12 +82,12 @@ func GetLDAPUser(username string) (User, bool) {
 
         searchResponse, err := l.Search(searchRequest)
         if err != nil {
-            revel.ERROR.Fatal(err)
+            revel.INFO.Printf("%s", err)
             return User{}, false
         }
 
         if len(searchResponse.Entries) != 1 {
-            revel.ERROR.Printf("User %s does not exist or too many entries", username)
+            revel.INFO.Printf("User %s does not exist or too many entries", username)
             return User{}, false
         }
 
