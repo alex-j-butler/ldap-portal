@@ -1,6 +1,7 @@
 package app
 
 import "github.com/revel/revel"
+import "github.com/revel/modules/jobs/app/jobs"
 import "github.com/cbonello/revel-csrf"
 
 func init() {
@@ -31,6 +32,11 @@ func init() {
         dbm := InitDB()
         // and migrate
         dbm.AutoMigrate(&User{})
+    })
+
+    revel.OnAppStart(func() {
+        // Schedule jobs
+        jobs.Schedule("@every 1h", UpdateAll{})
     })
 }
 
