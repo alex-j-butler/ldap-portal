@@ -90,7 +90,7 @@ func (c App) POST_ChangePassword(currentPassword string, newPassword string, con
     }
 
     var user app.User
-    app.DB.First(&user, &app.User{UID: c.Session["name"]})
+    app.DB.First(&user, &app.User{UID: c.Session["user"]})
 
     c.Validation.Required(currentPassword).Message("Please enter your current password")
     c.Validation.Required(newPassword).Message("Please enter your new password")
