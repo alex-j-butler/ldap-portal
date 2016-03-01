@@ -1,0 +1,30 @@
+{% extends "../_layout.tmpl" %}
+
+{% block content %}
+    <div class="columns">
+        <div class="column is-half is-offset-quarter">
+            <form method="POST" action="/account/details">
+                <div class="control">
+                    <label class="label" for="uid">Username</label>
+                    <input name="uid" class="input is-danger" type="text" value="{{ user.UID }}" placeholder="Username" disabled>
+                </div>
+                <div class="control">
+                    <label class="label" for="email">Email</label>
+                    <input name="email" class="input is-danger" type="text" value="{{ user.Email }}" placeholder="Email address" disabled>
+                </div>
+                <div class="control">
+                    <label class="label" for="givenName">First name</label>
+                    <input name="givenName" class="input" type="text" value="{{ user.GivenName }}" placeholder="First name">
+                </div>
+                <div class="control">
+                    <label class="label" for="surname">Surname</label>
+                    <input name="surname" class="input" type="text" value="{{ user.Surname }}" placeholder="Surname">
+                </div>
+                <div class="control">
+                    <input class="button is-success" type="submit" value="Save">
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

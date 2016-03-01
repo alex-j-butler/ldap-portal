@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>{{ title }} | LDAP Portal</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.0.15/css/bulma.min.css">
+    </head>
+    <body>
+        {% include "_header.tmpl" %}
+        <section class="section">
+            <div class="container">
+                {% include "_flash.tmpl" %}
+                <h1 class="title">{{ title }}</h1>
+                {% block content %}{% endblock %}
+            </div>
+        </section>
+        {% include "_footer.tmpl" %}
+    </body>
+</html>
+
