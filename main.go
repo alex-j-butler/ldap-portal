@@ -5,7 +5,7 @@ import (
     "github.com/go-macaron/session"
     "github.com/go-macaron/csrf"
     "github.com/go-macaron/pongo2"
-    "qixalite.com/Ranndom/ldap-portal/macaron/controllers"
+    "qixalite.com/Ranndom/ldap-portal/controllers"
 )
 
 func main() {
