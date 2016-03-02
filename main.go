@@ -60,7 +60,7 @@ func CreateWeb() *macaron.Macaron {
 
     // Enable CSRF protection
     m.Use(csrf.Csrfer(csrf.Options{
-        Secret: "hcmeit87fksmcuf9r4jfhg987fhfmvivcicvgshvochg38fgn",
+        Secret: settings.Csrf.Secret,
         SetCookie: true,
         Header: "X-CSRF-Token",
     }))
@@ -84,7 +84,10 @@ func RegisterRoutes(m *macaron.Macaron) {
             controllers.POSTAccountDetails,
         )
         m.Post("/ssh_keys", controllers.POSTAccountSSHKeys)
-        m.Post("/change_password", controllers.POSTAccountChangePassword)
+        m.Post("/change_password",
+            binding.Bind(models.AccountChangePasswordForm{},
+            controllers.POSTAccountChangePassword,
+        )
     })
 
     m.Group("/auth", func() {
