@@ -2,6 +2,9 @@ package controllers
 
 import (
     "gopkg.in/macaron.v1"
+    "github.com/go-macaron/session"
+    "qixalite.com/Ranndom/ldap-portal/models"
+    _ "qixalite.com/Ranndom/ldap-portal/modules/helpers"
 )
 
 const (
@@ -18,11 +21,27 @@ func AuthLogin(ctx *macaron.Context) {
     ctx.HTML(200, TMPL_AUTH_LOGIN)
 }
 
-func AuthLogout(ctx *macaron.Context) {
+func AuthLogout(ctx *macaron.Context, f *session.Flash, sess session.Store) {
+    // Delete the session.
+    sess.Delete("LoggedUser")
+    f.Success("Successfully logged out!")
 
+    ctx.Redirect(HOME)
 }
 
-func POSTAuthLogin(ctx *macaron.Context) {
-    ctx.Redirect(AUTH_LOGIN)
+func POSTAuthLogin(ctx *macaron.Context, f *session.Flash, sess session.Store, login models.LoginForm) {
+    u, status := models.GetLDAPUser(login.Username)
+    passwordStatus := u.VerifyPassword(login.Password)
+    if status == false || passwordStatus == false {
+        // User could not be retrieved.
+        f.Error("Invalid username/password")
+        ctx.Redirect(AUTH_LOGIN)
+        return
+    }
+
+    sess.Set("LoggedUser", u.UID)
+    f.Success("Welcome, " + u.UID)
+
+    ctx.Redirect(HOME)
 }
 

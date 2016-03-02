@@ -35,6 +35,11 @@ var (
         Secure          bool
         IDLength        int
     }
+
+    // CSRF information
+    CSRF struct {
+        Secret  string
+    }
 )
 
 func NewContext() {
@@ -67,5 +72,8 @@ func NewContext() {
     Session.CookieName = sec.Key("COOKIE_NAME").MustString("QixaliteSession")
     Session.Secure = sec.Key("SECURE").MustBool(false)
     Session.IDLength = sec.Key("ID_LENGTH").MustInt(32)
+
+    sec = cfg.Section("csrf")
+    CSRF.Secret = sec.Key("SECRET").MustString("change-me")
 }
 

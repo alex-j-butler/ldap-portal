@@ -5,7 +5,9 @@ import (
     "github.com/go-macaron/session"
     "github.com/go-macaron/csrf"
     "github.com/go-macaron/pongo2"
+    "github.com/go-macaron/binding"
     "qixalite.com/Ranndom/ldap-portal/controllers"
+    "qixalite.com/Ranndom/ldap-portal/models"
     "qixalite.com/Ranndom/ldap-portal/middleware"
     "qixalite.com/Ranndom/ldap-portal/modules/settings"
     "qixalite.com/Ranndom/ldap-portal/modules/database"
@@ -77,7 +79,10 @@ func RegisterRoutes(m *macaron.Macaron) {
         m.Get("/ssh_keys", controllers.AccountSSHKeys)
         m.Get("/change_password", controllers.AccountChangePassword)
 
-        m.Post("/details", controllers.POSTAccountDetails)
+        m.Post("/details",
+            binding.Bind(models.AccountDetailsForm{}),
+            controllers.POSTAccountDetails,
+        )
         m.Post("/ssh_keys", controllers.POSTAccountSSHKeys)
         m.Post("/change_password", controllers.POSTAccountChangePassword)
     })
@@ -86,7 +91,10 @@ func RegisterRoutes(m *macaron.Macaron) {
         m.Get("/login", controllers.AuthLogin)
         m.Get("/logout", controllers.AuthLogout)
 
-        m.Post("/login", controllers.POSTAuthLogin)
+        m.Post("/login",
+            binding.Bind(models.LoginForm{}),
+            controllers.POSTAuthLogin,
+        )
     })
 }
 

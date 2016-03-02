@@ -3,6 +3,7 @@ package ldap
 import (
     ldap_lib "gopkg.in/ldap.v2"
     "fmt"
+    "log"
     "crypto/tls"
 
     "qixalite.com/Ranndom/ldap-portal/modules/settings"
@@ -25,6 +26,7 @@ func (source LDAPSource) DialLDAP() (*ldap_lib.Conn, error) {
     if source.UseSSL {
         if source.SkipVerify {
             // Warn.
+            log.Printf("Connecting to LDAP %s (%s:%d) without TLS verification!", source.Name, source.Host, source.Port)
         }
 
         return ldap_lib.DialTLS("tcp", fmt.Sprintf("%s:%d", source.Host, source.Port), &tls.Config{InsecureSkipVerify: source.SkipVerify,})

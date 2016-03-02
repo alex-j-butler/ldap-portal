@@ -3,6 +3,8 @@ package controllers
 import (
     "gopkg.in/macaron.v1"
     "github.com/go-macaron/session"
+    "qixalite.com/Ranndom/ldap-portal/models"
+    "qixalite.com/Ranndom/ldap-portal/modules/database"
     "qixalite.com/Ranndom/ldap-portal/modules/helpers"
 )
 
@@ -25,6 +27,10 @@ func AccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Store) 
         return
     }
 
+    var user models.User
+    database.DB.Where(&models.User{UID: sess.Get("LoggedUser").(string)}).First(&user)
+
+    ctx.Data["user"] = user
     ctx.Data["title"] = "Details"
     ctx.HTML(200, TMPL_ACCOUNT_DETAILS)
 }
@@ -51,13 +57,22 @@ func AccountChangePassword(ctx *macaron.Context, f *session.Flash, sess session.
     ctx.HTML(200, TMPL_ACCOUNT_CHANGE_PASSWORD)
 }
 
-func POSTAccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Store) {
+func POSTAccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Store, account models.AccountDetailsForm) {
     if helpers.LoggedIn(ctx, sess) != true {
         f.Error("You must be logged in to access that!")
         ctx.Redirect(HOME)
         return
     }
 
+    var user models.User
+    database.DB.Where(&models.User{UID: sess.Get("LoggedUser").(string)}).First(&user)
+
+    user.GivenName = account.GivenName
+    user.Surname = account.Surname
+
+    database.DB.Save(&user)
+
+    f.Success("Updated account!")
     ctx.Redirect(ACCOUNT_DETAILS)
 }
 

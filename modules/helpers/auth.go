@@ -8,7 +8,7 @@ import (
 )
 
 func LoggedIn(ctx *macaron.Context, sess session.Store) bool {
-    userSess := sess.Get("user")
+    userSess := sess.Get("LoggedUser")
     if userSess != nil {
         // User is set, confirm user exists.
         var user models.User
