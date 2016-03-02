@@ -40,7 +40,7 @@ func AccountSSHKeys(ctx *macaron.Context, f *session.Flash, sess session.Store) 
     ctx.HTML(200, TMPL_ACCOUNT_SSH_KEYS)
 }
 
-func AccountChangePassword(ctx *macaron.Context) {
+func AccountChangePassword(ctx *macaron.Context, f *session.Flash, sess session.Store) {
     if helpers.LoggedIn(ctx, sess) != true {
         f.Error("You must be logged in to access that!")
         ctx.Redirect(HOME)
