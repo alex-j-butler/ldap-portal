@@ -5,3 +5,10 @@
     </div>
 {% endif %}
 
+{% if Flash.ErrorMsg %}
+    <div class="notification is-danger">
+        <button class="delete flash-delete"></button>
+        {{ Flash.ErrorMsg }}
+    </div>
+{% endif %}
+

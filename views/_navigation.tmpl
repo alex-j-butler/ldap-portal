@@ -14,5 +14,19 @@
     <p class="header-item">
         <a class="link" href="/">Home</a>
     </p>
+
+    {% if Session.Get("user") != nil %}
+        <p class="header-item">
+            <a class="link" href="/account/details">My account</a>
+        </p>
+
+        <p class="header-item">
+            <a class="link" href="/auth/logout">Logout</a>
+        </p>
+    {% else %}
+        <p class="header-item">
+            <a class="link" href="/auth/login">Login</a>
+        </p>
+    {% endif %}
 </div>
 
