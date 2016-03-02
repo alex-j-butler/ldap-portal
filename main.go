@@ -8,19 +8,18 @@ import (
     "qixalite.com/Ranndom/ldap-portal/controllers"
     "qixalite.com/Ranndom/ldap-portal/middleware"
     "qixalite.com/Ranndom/ldap-portal/modules/settings"
-
-    "log"
+    "qixalite.com/Ranndom/ldap-portal/modules/database"
 )
 
 func main() {
-    m := CreateWeb()
-
-    RegisterRoutes(m)
-
-    // Debugging settings
+    // Load settings
     settings.NewContext()
-    log.Printf(settings.LDAP.Hostname)
 
+    // Load database
+    database.InitDatabase()
+
+    m := CreateWeb()
+    RegisterRoutes(m)
     m.Run()
 }
 
@@ -49,7 +48,13 @@ func CreateWeb() *macaron.Macaron {
     }))
 
     // Enable sessions
-    m.Use(session.Sessioner())
+    m.Use(session.Sessioner(session.Options{
+        Provider: settings.Session.Provider,
+        ProviderConfig: settings.Session.ProviderConfig,
+        CookieName: settings.Session.CookieName,
+        Secure: settings.Session.Secure,
+        IDLength: settings.Session.IDLength,
+    }))
 
     // Enable CSRF protection
     m.Use(csrf.Csrfer(csrf.Options{
@@ -58,6 +63,7 @@ func CreateWeb() *macaron.Macaron {
         Header: "X-CSRF-Token",
     }))
 
+    // Enable template sessions
     m.Use(middleware.TemplateSessioner())
 
     return m

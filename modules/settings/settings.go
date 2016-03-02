@@ -17,6 +17,24 @@ var (
         UserFilter  string
         AdminFilter string
     }
+
+    // Database information
+    Database struct {
+        Driver          string
+        Spec            string
+        MaxIdleConns    int
+        MaxOpenConns    int
+        LogMode         bool
+    }
+
+    // Session information
+    Session struct {
+        Provider        string
+        ProviderConfig  string
+        CookieName      string
+        Secure          bool
+        IDLength        int
+    }
 )
 
 func NewContext() {
@@ -35,5 +53,19 @@ func NewContext() {
     LDAP.UserSearch = sec.Key("USER_SEARCH").MustString("ou=People,dc=example,dc=com")
     LDAP.UserFilter = sec.Key("USER_FILTER").MustString("(&(objectClass=inetOrgPerson)(uid=%s))")
     LDAP.AdminFilter = sec.Key("ADMIN_FILTER").MustString("(&(objectClass=inetOrgPerson)(isMemberOf=cn=Admin,ou=Groups,dc=example,dc=com))")
+
+    sec = cfg.Section("database")
+    Database.Driver = sec.Key("DRIVER").MustString("mysql")
+    Database.Spec = sec.Key("SPEC").MustString("root:password1@/ldap_portal?charset=utf8")
+    Database.MaxIdleConns = sec.Key("MAX_IDLE_CONNS").MustInt(10)
+    Database.MaxOpenConns = sec.Key("MAX_OPEN_CONNS").MustInt(100)
+    Database.LogMode = sec.Key("LOG_MODE").MustBool(true)
+
+    sec = cfg.Section("session")
+    Session.Provider = sec.Key("PROVIDER").MustString("memory")
+    Session.ProviderConfig = sec.Key("PROVIDER_CONFIG").MustString("")
+    Session.CookieName = sec.Key("COOKIE_NAME").MustString("QixaliteSession")
+    Session.Secure = sec.Key("SECURE").MustBool(false)
+    Session.IDLength = sec.Key("ID_LENGTH").MustInt(32)
 }
 
