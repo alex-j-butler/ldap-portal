@@ -6,6 +6,7 @@ import (
     "github.com/go-macaron/csrf"
     "github.com/go-macaron/pongo2"
     "qixalite.com/Ranndom/ldap-portal/controllers"
+    "qixalite.com/Ranndom/ldap-portal/middleware"
 )
 
 func main() {
@@ -49,6 +50,8 @@ func CreateWeb() *macaron.Macaron {
         SetCookie: true,
         Header: "X-CSRF-Token",
     }))
+
+    m.Use(middleware.TemplateSessioner())
 
     return m
 }
