@@ -7,12 +7,19 @@ import (
     "github.com/go-macaron/pongo2"
     "qixalite.com/Ranndom/ldap-portal/controllers"
     "qixalite.com/Ranndom/ldap-portal/middleware"
+    "qixalite.com/Ranndom/ldap-portal/modules/settings"
+
+    "log"
 )
 
 func main() {
     m := CreateWeb()
 
     RegisterRoutes(m)
+
+    // Debugging settings
+    settings.NewContext()
+    log.Printf(settings.LDAP.Hostname)
 
     m.Run()
 }
