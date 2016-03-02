@@ -1,11 +1,13 @@
 package controllers
 
 import (
+    "time"
     "gopkg.in/macaron.v1"
     "github.com/go-macaron/session"
     "qixalite.com/Ranndom/ldap-portal/models"
     "qixalite.com/Ranndom/ldap-portal/modules/database"
     "qixalite.com/Ranndom/ldap-portal/modules/helpers"
+    "qixalite.com/Ranndom/ldap-portal/modules/jobs"
 )
 
 const (
@@ -42,6 +44,13 @@ func AccountSSHKeys(ctx *macaron.Context, f *session.Flash, sess session.Store) 
         return
     }
 
+    var user models.User
+    var sshKeys []models.SSHKey
+    database.DB.First(&user, &models.User{UID: sess.Get("LoggedUser").(string)})
+    database.DB.Model(&user).Related(&sshKeys)
+
+    ctx.Data["user"] = user
+    ctx.Data["sshKeys"] = sshKeys
     ctx.Data["title"] = "SSH Keys"
     ctx.HTML(200, TMPL_ACCOUNT_SSH_KEYS)
 }
@@ -71,6 +80,7 @@ func POSTAccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Sto
     user.Surname = account.Surname
 
     database.DB.Save(&user)
+    jobs.UpdateUserJob.Schedule(1, time.Now(), &jobs.UpdateUser{User: user})
 
     f.Success("Updated account!")
     ctx.Redirect(ACCOUNT_DETAILS)

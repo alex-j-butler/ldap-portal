@@ -21,7 +21,17 @@
                     <p class="subtitle">Manage your Qixalite staff account</p>
                 </div>
             </div>
-            {% block tabs %}{% endblock %}
+            <div class="hero-footer">
+                <nav class="tabs is-boxed">
+                    <div class="container">
+                        <ul>
+                            <li {% if title == "Details" %} class="is-active" {% endif %}><a href="/account/details">Account details</a></li>
+                            <li {% if title == "SSH Keys" %} class="is-active" {% endif %}><a href="/account/ssh_keys">SSH Keys</a></li>
+                            <li {% if title == "Change password" %} class="is-active" {% endif %}><a href="/account/change_password">Change password</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
         </section>
         
         <section class="section">

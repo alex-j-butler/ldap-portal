@@ -1,0 +1,29 @@
+{% extends "../_account_layout.tmpl" %}
+
+{% block content %}
+    <div class="columns">
+        <div class="column is-half is-offset-quarter">
+            <nav class="menu">
+                <p class="menu-heading">
+                    Keys
+                    <span class="is-pulled-right">
+                        <a class="button is-small is-primary is-outlined">New key</a>
+                    </span>
+                </p>
+
+                {% for ssh_key in sshKeys %}
+                    <div class="menu-block">
+                        <span class="menu-icon">
+                            <i class="fa fa-key"></i>
+                        </span>
+                        {{ ssh_key.KeyName }}
+                        <span class="is-pulled-right">
+                            <a href="#"><i class="fa fa-trash"></i></a>
+                        </span>
+                    </div>
+                {% endfor %}
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+

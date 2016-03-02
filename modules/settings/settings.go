@@ -40,6 +40,14 @@ var (
     CSRF struct {
         Secret  string
     }
+
+    // Jobs information
+    Jobs struct {
+        Address     string
+        Network     string
+        Database    int
+        Password    string
+    }
 )
 
 func NewContext() {
@@ -75,5 +83,11 @@ func NewContext() {
 
     sec = cfg.Section("csrf")
     CSRF.Secret = sec.Key("SECRET").MustString("change-me")
+
+    sec = cfg.Section("jobs")
+    Jobs.Address = sec.Key("ADDRESS").MustString("localhost:6379")
+    Jobs.Network = sec.Key("NETWORK").MustString("tcp")
+    Jobs.Database = sec.Key("DATABASE").MustInt(0)
+    Jobs.Password = sec.Key("PASSWORD").MustString("")
 }
 
