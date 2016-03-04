@@ -1,20 +1,37 @@
 package jobs
 
 import (
-    "github.com/albrow/jobs"
+    jobs_lib "github.com/albrow/jobs"
     "qixalite.com/Ranndom/ldap-portal/modules/settings"
+
+    "log"
 )
 
 var (
-    UpdateUserJob *jobs.Type
+    UpdateUserJob *jobs_lib.Type
 )
 
 func InitJobs() {
-    jobs.Config.Db.Address = settings.Jobs.Address
-    jobs.Config.Db.Network = settings.Jobs.Network
-    jobs.Config.Db.Database = settings.Jobs.Database
-    jobs.Config.Db.Password = settings.Jobs.Password
+    log.Printf("Memes!")
 
-    UpdateUserJob, _ = jobs.RegisterType("updateUser", 3, UpdateUserRun)
+    jobs_lib.Config.Db.Address = settings.Jobs.Address
+    jobs_lib.Config.Db.Network = settings.Jobs.Network
+    jobs_lib.Config.Db.Database = settings.Jobs.Database
+    jobs_lib.Config.Db.Password = settings.Jobs.Password
+
+    var err error
+
+    pool, err := jobs_lib.NewPool(nil)
+    if err != nil {
+        log.Printf("%s", err)
+    }
+    if err := pool.Start(); err != nil {
+        log.Printf("%s", err)
+    }
+
+    UpdateUserJob, err = jobs_lib.RegisterType("updateUser", 3, UpdateUserRun)
+    if err != nil {
+        log.Printf("%s", err)
+    }
 }
 

@@ -11,6 +11,7 @@ import (
     "qixalite.com/Ranndom/ldap-portal/middleware"
     "qixalite.com/Ranndom/ldap-portal/modules/settings"
     "qixalite.com/Ranndom/ldap-portal/modules/database"
+    "qixalite.com/Ranndom/ldap-portal/modules/jobs"
 )
 
 func main() {
@@ -19,6 +20,9 @@ func main() {
 
     // Load database
     database.InitDatabase()
+
+    // Init jobs
+    jobs.InitJobs()
 
     m := CreateWeb()
     RegisterRoutes(m)
@@ -60,7 +64,7 @@ func CreateWeb() *macaron.Macaron {
 
     // Enable CSRF protection
     m.Use(csrf.Csrfer(csrf.Options{
-        Secret: settings.Csrf.Secret,
+        Secret: settings.CSRF.Secret,
         SetCookie: true,
         Header: "X-CSRF-Token",
     }))
@@ -87,7 +91,7 @@ func RegisterRoutes(m *macaron.Macaron) {
         m.Post("/change_password",
             binding.Bind(models.AccountChangePasswordForm{},
             controllers.POSTAccountChangePassword,
-        )
+        ))
     })
 
     m.Group("/auth", func() {

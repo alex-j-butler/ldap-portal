@@ -5,6 +5,8 @@ import (
 
     "qixalite.com/Ranndom/ldap-portal/models"
     "qixalite.com/Ranndom/ldap-portal/modules/ldap"
+
+    "log"
 )
 
 type UpdateUser struct {
@@ -15,6 +17,7 @@ func UpdateUserRun(data *UpdateUser) error {
     source := ldap.LDAPSourceFromConfig()
     l, err := source.DialLDAP()
     if err != nil {
+        log.Printf("%s", err)
         return err
     }
     source.BindLDAP(l)
@@ -25,6 +28,7 @@ func UpdateUserRun(data *UpdateUser) error {
 
     err = l.Modify(modifyRequest)
     if err != nil {
+        log.Printf("%s", err)
         return err
     }
 
