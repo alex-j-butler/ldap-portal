@@ -21,14 +21,6 @@ func InitJobs() {
 
     var err error
 
-    pool, err := jobs_lib.NewPool(nil)
-    if err != nil {
-        log.Printf("%s", err)
-    }
-    if err := pool.Start(); err != nil {
-        log.Printf("%s", err)
-    }
-
     UpdateUserJob, err = jobs_lib.RegisterType("updateUser", 3, UpdateUserRun)
     if err != nil {
         log.Printf("%s", err)

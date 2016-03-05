@@ -12,6 +12,8 @@ import (
     "qixalite.com/Ranndom/ldap-portal/modules/settings"
     "qixalite.com/Ranndom/ldap-portal/modules/database"
     "qixalite.com/Ranndom/ldap-portal/modules/jobs"
+
+    _ "github.com/go-macaron/session/redis"
 )
 
 func main() {
