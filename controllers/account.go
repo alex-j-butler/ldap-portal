@@ -2,33 +2,17 @@ package controllers
 
 import (
     "time"
+    "fmt"
+    "strconv"
     "gopkg.in/macaron.v1"
     "github.com/go-macaron/session"
     "qixalite.com/Ranndom/ldap-portal/models"
     "qixalite.com/Ranndom/ldap-portal/modules/database"
-    "qixalite.com/Ranndom/ldap-portal/modules/helpers"
     "qixalite.com/Ranndom/ldap-portal/modules/jobs"
-)
-
-const (
-    ACCOUNT_DETAILS = "/account/details"
-    ACCOUNT_SSH_KEYS = "/account/ssh_keys"
-    ACCOUNT_CHANGE_PASSWORD = "/account/change_password"
-)
-
-const (
-    TMPL_ACCOUNT_DETAILS = "account/details"
-    TMPL_ACCOUNT_SSH_KEYS = "account/ssh_keys"
-    TMPL_ACCOUNT_CHANGE_PASSWORD = "account/change_password"
+    "qixalite.com/Ranndom/ldap-portal/modules/validation"
 )
 
 func AccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Store) {
-    if helpers.LoggedIn(ctx, sess) != true {
-        f.Error("You must be logged in to access that!")
-        ctx.Redirect(HOME)
-        return
-    }
-
     var user models.User
     database.DB.Where(&models.User{UID: sess.Get("LoggedUser").(string)}).First(&user)
 
@@ -38,12 +22,6 @@ func AccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Store) 
 }
 
 func AccountSSHKeys(ctx *macaron.Context, f *session.Flash, sess session.Store) {
-    if helpers.LoggedIn(ctx, sess) != true {
-        f.Error("You must be logged in to access that!")
-        ctx.Redirect(HOME)
-        return
-    }
-
     var user models.User
     var sshKeys []models.SSHKey
     database.DB.First(&user, &models.User{UID: sess.Get("LoggedUser").(string)})
@@ -55,24 +33,29 @@ func AccountSSHKeys(ctx *macaron.Context, f *session.Flash, sess session.Store) 
     ctx.HTML(200, TMPL_ACCOUNT_SSH_KEYS)
 }
 
-func AccountChangePassword(ctx *macaron.Context, f *session.Flash, sess session.Store) {
-    if helpers.LoggedIn(ctx, sess) != true {
-        f.Error("You must be logged in to access that!")
-        ctx.Redirect(HOME)
-        return
-    }
+func AccountNewSSHKey(ctx *macaron.Context, f *session.Flash, sess session.Store) {
+    ctx.Data["title"] = "New SSH Key"
+    ctx.HTML(200, TMPL_ACCOUNT_NEW_SSH_KEY)
+}
 
+func AccountEditSSHKey(ctx *macaron.Context, f *session.Flash, sess session.Store) {
+    id64, _ := strconv.ParseInt(ctx.Params(":id"), 0, 64)
+    id := int(id64)
+
+    var sshKey models.SSHKey
+    database.DB.First(&sshKey, &models.SSHKey{ID: id})
+
+    ctx.Data["ssh_key"] = sshKey
+    ctx.Data["title"] = fmt.Sprintf("Edit %s", sshKey.KeyName)
+    ctx.HTML(200, TMPL_ACCOUNT_EDIT_SSH_KEY)
+}
+
+func AccountChangePassword(ctx *macaron.Context, f *session.Flash, sess session.Store) {
     ctx.Data["title"] = "Change password"
     ctx.HTML(200, TMPL_ACCOUNT_CHANGE_PASSWORD)
 }
 
 func POSTAccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Store, account models.AccountDetailsForm) {
-    if helpers.LoggedIn(ctx, sess) != true {
-        f.Error("You must be logged in to access that!")
-        ctx.Redirect(HOME)
-        return
-    }
-
     var user models.User
     database.DB.Where(&models.User{UID: sess.Get("LoggedUser").(string)}).First(&user)
 
@@ -87,21 +70,34 @@ func POSTAccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Sto
 }
 
 func POSTAccountSSHKeys(ctx *macaron.Context, f *session.Flash, sess session.Store) {
-    if helpers.LoggedIn(ctx, sess) != true {
-        f.Error("You must be logged in to access that!")
-        ctx.Redirect(HOME)
-        return
-    }
-
     ctx.Redirect(ACCOUNT_SSH_KEYS)
 }
 
-func POSTAccountChangePassword(ctx *macaron.Context, f *session.Flash, sess session.Store) {
-    if helpers.LoggedIn(ctx, sess) != true {
-        f.Error("You must be logged in to access that!")
-        ctx.Redirect(HOME)
-        return
-    }
+func POSTAccountNewSSHKey(ctx *macaron.Context, f *session.Flash, sess session.Store) {
+    ctx.Redirect(ACCOUNT_SSH_KEYS)
+}
+
+func POSTAccountEditSSHKey(ctx *macaron.Context, f *session.Flash, sess session.Store, keyForm models.AccountSSHKeyForm) {
+    id64, _ := strconv.ParseInt(ctx.Params(":id"), 0, 64)
+    id := int(id64)
+
+    var sshKey models.SSHKey
+    database.DB.First(&sshKey, &models.SSHKey{ID: id})
+
+    sshKey.KeyName = keyForm.KeyName
+    sshKey.Key = keyForm.Key
+
+    database.DB.Save(&sshKey)
+
+    ctx.Redirect(ACCOUNT_EDIT_SSH_KEY(1))
+}
+
+func POSTAccountDeleteSSHKey(ctx *macaron.Context, f *session.Flash, sess session.Store) {
+    ctx.Redirect(ACCOUNT_SSH_KEYS)
+}
+
+func POSTAccountChangePassword(ctx *macaron.Context, f *session.Flash, sess session.Store, password models.AccountChangePasswordForm) {
+    validation.Validate(password)
 
     ctx.Redirect(ACCOUNT_CHANGE_PASSWORD)
 }

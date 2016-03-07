@@ -7,7 +7,7 @@
                 <p class="menu-heading">
                     Keys
                     <span class="is-pulled-right">
-                        <a class="button is-small is-primary is-outlined">New key</a>
+                        <a href="/account/ssh_keys/new" class="button is-small is-primary is-outlined">New key</a>
                     </span>
                 </p>
 
@@ -17,9 +17,19 @@
                             <i class="fa fa-key"></i>
                         </span>
                         {{ ssh_key.KeyName }}
-                        <span class="is-pulled-right">
-                            <a href="#"><i class="fa fa-trash"></i></a>
-                        </span>
+                        <div class="is-pulled-right">
+                            <span>
+                                <a href="/account/ssh_keys/{{ ssh_key.ID }}/edit"><i class="fa fa-pencil"></i></a>
+                            </span>
+                            <span class="is-pulled-right" style="padding-left: 10px;">
+                                <form name="delete_key_{{ ssh_key.ID }}" method="POST" action="/account/ssh_keys/{{ ssh_key.ID }}/delete">
+                                    <a href="#" onclick="document.forms['delete_key_{{ ssh_key.ID }}'].submit();"><i class="fa fa-trash"></i></a>
+                                    <noscript>
+                                        <input type="submit" value="Delete" />
+                                    </noscript>
+                                </form>
+                            </span>
+                        </div>
                     </div>
                 {% endfor %}
             </nav>

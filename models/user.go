@@ -76,7 +76,7 @@ func GetLDAPUser(username string) (User, bool) {
             source.UserSearch,
             ldap_lib.ScopeWholeSubtree, ldap_lib.NeverDerefAliases, 0, 0, false,
             fmt.Sprintf(source.UserFilter, username),
-            []string{"dn", "uid", "givenName", "surname", "mail"},
+            []string{"dn", "uid", "givenName", "surname", "mail", "sshPublicKey"},
             nil,
         )
 
@@ -94,9 +94,15 @@ func GetLDAPUser(username string) (User, bool) {
         givenName := searchResponse.Entries[0].GetAttributeValue("givenName")
         surname := searchResponse.Entries[0].GetAttributeValue("surname")
         mail := searchResponse.Entries[0].GetAttributeValue("mail")
+        sshPublicKeys := searchResponse.Entries[0].GetAttributeValues("sshPublicKey")
 
         user = User{DN: dn, UID: uid, GivenName: givenName, Surname: surname, Email: mail}
         database.DB.Create(&user)
+       
+        for _,key := range sshPublicKeys {
+            sshKey := SSHKey{Key: key, KeyName: GenerateKeyName(key), User: user}
+            database.DB.Create(&sshKey)
+        }
 
         return user, true
     }

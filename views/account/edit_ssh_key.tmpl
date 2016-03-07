@@ -1,0 +1,21 @@
+{% extends "../_account_layout.tmpl" %}
+
+{% block content %}
+    <div class="columns">
+        <div class="column is-half is-offset-quarter">
+            <form method="POST" action="/account/ssh_keys/{{ ssh_key.ID }}/edit">
+                <div class="control">
+                    <input name="key_name" class="input" type="text" placeholder="Key name" value="{{ ssh_key.KeyName }}">
+                </div>
+                <div class="control">
+                    <textarea class="textarea">{{ ssh_key.Key }}</textarea>
+                </div>
+                <div class="control">
+                    <input class="button is-success" type="submit" value="Save">
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+
+

@@ -36,6 +36,7 @@ func (source LDAPSource) DialLDAP() (*ldap_lib.Conn, error) {
 }
 
 func (source LDAPSource) BindLDAP(l *ldap_lib.Conn) {
+    // Bind LDAP using the BindDN & BindPassword.
     l.Bind(source.BindDN, source.BindPassword)
 }
 

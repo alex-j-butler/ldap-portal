@@ -1,8 +1,8 @@
 package models
 
 type AccountChangePasswordForm struct {
-    CurrentPassword     string `binding:"Required"`
-    NewPassword         string `binding:"Required"`
-    ConfirmPassword     string `binding:"Required"`
+    CurrentPassword     string `valid:"required"`
+    NewPassword         string `valid:"required"`
+    ConfirmPassword     string `valid:"required"`
 }
 

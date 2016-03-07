@@ -32,18 +32,18 @@ func StartPool() {
     }
 
     defer func() {
+        log.Printf("Running defer!")
         pool.Close()
         if err := pool.Wait(); err != nil {
             log.Fatal("Error running pool: ", err)
         }
     }()
 
-    MainLoop(pool)
+    MainLoop()
 }
 
-func MainLoop(pool *jobs_lib.Pool) {
+func MainLoop() {
     for true {
-        pool.Wait()
     }
 }
 

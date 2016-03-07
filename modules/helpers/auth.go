@@ -7,7 +7,7 @@ import (
     "qixalite.com/Ranndom/ldap-portal/models"
 )
 
-func LoggedIn(ctx *macaron.Context, sess session.Store) bool {
+func IsLoggedIn(ctx *macaron.Context, f *session.Flash, sess session.Store) {
     userSess := sess.Get("LoggedUser")
     if userSess != nil {
         // User is set, confirm user exists.
@@ -15,10 +15,11 @@ func LoggedIn(ctx *macaron.Context, sess session.Store) bool {
         query := database.DB.Where(&models.User{UID: userSess.(string)}).First(&user)
 
         if query.Error == nil {
-            return true
+            return
         }
     }
 
-    return false
+    f.Error("You must be logged in to access that!")
+    ctx.Redirect("/")
 }
 

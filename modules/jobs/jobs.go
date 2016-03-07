@@ -3,27 +3,21 @@ package jobs
 import (
     jobs_lib "github.com/albrow/jobs"
     "qixalite.com/Ranndom/ldap-portal/modules/settings"
-
-    "log"
 )
 
 var (
     UpdateUserJob *jobs_lib.Type
+    UpdateUserKeysJob *jobs_lib.Type
 )
 
 func InitJobs() {
-    log.Printf("Memes!")
-
     jobs_lib.Config.Db.Address = settings.Jobs.Address
     jobs_lib.Config.Db.Network = settings.Jobs.Network
     jobs_lib.Config.Db.Database = settings.Jobs.Database
     jobs_lib.Config.Db.Password = settings.Jobs.Password
 
-    var err error
 
-    UpdateUserJob, err = jobs_lib.RegisterType("updateUser", 3, UpdateUserRun)
-    if err != nil {
-        log.Printf("%s", err)
-    }
+    UpdateUserJob, _ = jobs_lib.RegisterType("updateUser", 3, UpdateUserRun)
+    UpdateUserKeysJob, _ = jobs_lib.RegisterType("updateUserKeys", 3, UpdateUserKeysRun)
 }
 

@@ -12,6 +12,7 @@ import (
     "qixalite.com/Ranndom/ldap-portal/modules/settings"
     "qixalite.com/Ranndom/ldap-portal/modules/database"
     "qixalite.com/Ranndom/ldap-portal/modules/jobs"
+    "qixalite.com/Ranndom/ldap-portal/modules/helpers"
 
     _ "github.com/go-macaron/session/redis"
 )
@@ -44,6 +45,8 @@ func CreateWeb() *macaron.Macaron {
             SkipLogging: false,
         },
     ))
+
+    m.Use(macaron.Recovery())
 
     // Enable template rendering
     m.Use(pongo2.Pongoer(pongo2.Options{
@@ -80,28 +83,46 @@ func CreateWeb() *macaron.Macaron {
 func RegisterRoutes(m *macaron.Macaron) {
     m.Get("/", controllers.Home)
 
+    m.Group("/profile", func() {
+        m.Get("/:name", controllers.UserProfile)
+    })
+
     m.Group("/account", func() {
         m.Get("/details", controllers.AccountDetails)
-        m.Get("/ssh_keys", controllers.AccountSSHKeys)
         m.Get("/change_password", controllers.AccountChangePassword)
 
         m.Post("/details",
-            binding.Bind(models.AccountDetailsForm{}),
+            binding.BindIgnErr(models.AccountDetailsForm{}),
             controllers.POSTAccountDetails,
         )
-        m.Post("/ssh_keys", controllers.POSTAccountSSHKeys)
         m.Post("/change_password",
-            binding.Bind(models.AccountChangePasswordForm{},
+            binding.BindIgnErr(models.AccountChangePasswordForm{}),
             controllers.POSTAccountChangePassword,
-        ))
-    })
+        )
+
+        m.Group("/ssh_keys", func() {
+            m.Get("/", controllers.AccountSSHKeys)
+            m.Get("/new", controllers.AccountNewSSHKey)
+            m.Get("/:id/edit", controllers.AccountEditSSHKey)
+
+            m.Post("/new",
+                binding.BindIgnErr(models.AccountSSHKeyForm{}),
+                controllers.POSTAccountNewSSHKey,
+            )
+            m.Post("/:id/edit",
+                binding.BindIgnErr(models.AccountSSHKeyForm{}),
+                controllers.POSTAccountEditSSHKey,
+            )
+            m.Post("/:id/delete", controllers.POSTAccountDeleteSSHKey)
+        })
+    }, helpers.IsLoggedIn)
 
     m.Group("/auth", func() {
         m.Get("/login", controllers.AuthLogin)
         m.Get("/logout", controllers.AuthLogout)
 
         m.Post("/login",
-            binding.Bind(models.LoginForm{}),
+            binding.BindIgnErr(models.LoginForm{}),
             controllers.POSTAuthLogin,
         )
     })

@@ -1,0 +1,27 @@
+{% extends "../_layout.tmpl" %}
+
+{% block content %}
+    <div class="columns">
+	<div class="column is-quarter">
+	    <div class="card">
+		<div class="card-image">
+		    <figure class="image is-4by3">
+			<img src="http://placehold.it/300x225" alt="">
+		    </figure>
+		</div>
+		<div class="card-content">
+		    <div class="media">
+			<div class="media-content">
+			    <p class="title is-5">{{ user.GivenName }} {{user.Surname }}</p>
+			    <p class="subtitle is-6">{{ user.UID }}</p>
+			</div>
+		    </div>
+		</div>
+	    </div>
+	</div>
+        <div class="column is-three-quarters" style="background-color: red">
+            Hi
+        </div>
+    </div>
+{% endblock %}
+
