@@ -1,4 +1,10 @@
-test-results/
-tmp/
-routes/
-conf/app.conf
+# Log files
+logs/
+
+# Compiled binaries
+application
+worker
+
+# Development configurations
+conf/app.ini
+
