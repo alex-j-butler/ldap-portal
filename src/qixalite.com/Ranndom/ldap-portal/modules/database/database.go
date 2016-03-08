@@ -16,14 +16,14 @@ func InitDatabase() *gorm.DB {
         log.Fatal(err)
     }
 
-    DB = &dbm
+    DB = dbm
 
     dbm.DB().Ping()
     dbm.DB().SetMaxIdleConns(settings.Database.MaxIdleConns)
     dbm.DB().SetMaxOpenConns(settings.Database.MaxOpenConns)
     dbm.LogMode(settings.Database.LogMode)
 
-    return &dbm
+    return dbm
 }
 
 func RegisterModel(model interface{}) {
