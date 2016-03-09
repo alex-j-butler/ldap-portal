@@ -6,7 +6,7 @@ application
 worker
 
 # Development configurations
-src/qixalite.com/Ranndom/ldap-portal/conf/app.ini
+conf/app.ini
 
 # Go GOPATH stuff
 pkg
