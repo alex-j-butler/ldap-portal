@@ -83,8 +83,7 @@ func POSTAccountNewSSHKey(ctx *macaron.Context, f *session.Flash, sess session.S
 }
 
 func POSTAccountEditSSHKey(ctx *macaron.Context, f *session.Flash, sess session.Store, keyForm models.AccountSSHKeyForm) {
-    id64, _ := strconv.ParseInt(ctx.Params(":id"), 0, 64)
-    id := int(id64)
+    id := ctx.ParamsInt(":id")
 
     var sshKey models.SSHKey
     database.DB.First(&sshKey, &models.SSHKey{ID: id})
@@ -94,7 +93,7 @@ func POSTAccountEditSSHKey(ctx *macaron.Context, f *session.Flash, sess session.
 
     database.DB.Save(&sshKey)
 
-    ctx.Redirect(ACCOUNT_EDIT_SSH_KEY(1))
+    ctx.Redirect(ACCOUNT_EDIT_SSH_KEY(id))
 }
 
 func POSTAccountDeleteSSHKey(ctx *macaron.Context, f *session.Flash, sess session.Store) {
