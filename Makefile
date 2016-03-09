@@ -17,3 +17,7 @@ build_windows_amd64:
 build:
 	GOPATH=`pwd` go get -v qixalite.com/Ranndom/ldap-portal
 	GOPATH=`pwd` go build -o ldap-portal-default -v src/qixalite.com/Ranndom/ldap-portal/main.go
+
+run:
+	GOPATH=`pwd` go get -v qixalite.com/Ranndom/ldap-portal
+	GOPATH=`pwd` go run src/qixalite.com/Ranndom/ldap-portal/main.go
