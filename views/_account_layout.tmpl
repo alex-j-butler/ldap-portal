@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>{{ title }} | LDAP Portal</title>
+        <title>{{ Title }} | LDAP Portal</title>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
         <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.0.15/css/bulma.min.css">
         <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -26,9 +26,9 @@
                 <nav class="tabs is-boxed">
                     <div class="container">
                         <ul>
-                            <li {% if title == "Details" %} class="is-active" {% endif %}><a href="/account/details">Account details</a></li>
-                            <li {% if title == "SSH Keys" %} class="is-active" {% endif %}><a href="/account/ssh_keys">SSH Keys</a></li>
-                            <li {% if title == "Change password" %} class="is-active" {% endif %}><a href="/account/change_password">Change password</a></li>
+                            <li {% if Subtitle == "Details" %} class="is-active" {% endif %}><a href="/account/details">Account details</a></li>
+                            <li {% if Subtitle == "SSH Keys" %} class="is-active" {% endif %}><a href="/account/ssh_keys">SSH Keys</a></li>
+                            <li {% if Subtitle == "Change password" %} class="is-active" {% endif %}><a href="/account/change_password">Change password</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -38,7 +38,12 @@
         <section class="section">
             <div class="container">
                 {% include "_flash.tmpl" %}
-                <h1 class="title">{{ title }}</h1>
+                {% if Title %}
+                    <h1 class="title">{{ Title }}</h1>
+                {% endif %}
+                {% if Subtitle %}
+                    <h1 class="subtitle">{{ Subtitle }}</h1>
+                {% endif %}
                 {% block content %}{% endblock %}
             </div>
         </section>
