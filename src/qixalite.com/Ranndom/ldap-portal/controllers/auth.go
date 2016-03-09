@@ -17,7 +17,7 @@ const (
 )
 
 func AuthLogin(ctx *macaron.Context) {
-    ctx.Data["title"] = "Login"
+    ctx.Data["Title"] = "Login"
     ctx.HTML(200, TMPL_AUTH_LOGIN)
 }
 

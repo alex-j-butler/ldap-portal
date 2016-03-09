@@ -17,7 +17,8 @@ func AccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Store) 
     database.DB.Where(&models.User{UID: sess.Get("LoggedUser").(string)}).First(&user)
 
     ctx.Data["user"] = user
-    ctx.Data["title"] = "Details"
+    ctx.Data["Title"] = "Account"
+    ctx.Data["Subtitle"] = "Details"
     ctx.HTML(200, TMPL_ACCOUNT_DETAILS)
 }
 
@@ -29,12 +30,14 @@ func AccountSSHKeys(ctx *macaron.Context, f *session.Flash, sess session.Store) 
 
     ctx.Data["user"] = user
     ctx.Data["sshKeys"] = sshKeys
-    ctx.Data["title"] = "SSH Keys"
+    ctx.Data["Title"] = "Account"
+    ctx.Data["Subtitle"] = "SSH Keys"
     ctx.HTML(200, TMPL_ACCOUNT_SSH_KEYS)
 }
 
 func AccountNewSSHKey(ctx *macaron.Context, f *session.Flash, sess session.Store) {
-    ctx.Data["title"] = "New SSH Key"
+    ctx.Data["Title"] = "SSH Keys"
+    ctx.Data["Subtitle"] = "New key"
     ctx.HTML(200, TMPL_ACCOUNT_NEW_SSH_KEY)
 }
 
@@ -46,12 +49,14 @@ func AccountEditSSHKey(ctx *macaron.Context, f *session.Flash, sess session.Stor
     database.DB.First(&sshKey, &models.SSHKey{ID: id})
 
     ctx.Data["ssh_key"] = sshKey
-    ctx.Data["title"] = fmt.Sprintf("Edit %s", sshKey.KeyName)
+    ctx.Data["Title"] = "SSH Keys"
+    ctx.Data["Subtitle"] = fmt.Sprintf("Edit %s", sshKey.KeyName)
     ctx.HTML(200, TMPL_ACCOUNT_EDIT_SSH_KEY)
 }
 
 func AccountChangePassword(ctx *macaron.Context, f *session.Flash, sess session.Store) {
-    ctx.Data["title"] = "Change password"
+    ctx.Data["Title"] = "Account"
+    ctx.Data["Subtitle"] = "Change password"
     ctx.HTML(200, TMPL_ACCOUNT_CHANGE_PASSWORD)
 }
 

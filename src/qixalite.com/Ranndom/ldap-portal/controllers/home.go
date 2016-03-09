@@ -5,7 +5,7 @@ import (
 )
 
 func Home(ctx *macaron.Context) {
-    ctx.Data["title"] = "Home"
+    ctx.Data["Title"] = "Home"
     ctx.HTML(200, TMPL_HOME)
 }
 
