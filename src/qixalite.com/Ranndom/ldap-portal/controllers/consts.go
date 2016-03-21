@@ -10,7 +10,6 @@ const (
     HOME = "/"
     
     ACCOUNT_DETAILS = "/account/details"
-    ACCOUNT_SSH_KEYS = "/account/ssh_keys"
     ACCOUNT_CHANGE_PASSWORD = "/account/change_password"
 )
 
@@ -18,8 +17,8 @@ const (
 // a parameter (eg. a user profile requires
 // a name passed to it)
 var (
-    ACCOUNT_EDIT_SSH_KEY = func(id int) (string) {
-        return fmt.Sprintf("/account/ssh_keys/%d/edit", id)
+    EXAMPLE = func(id int) (string) {
+        return fmt.Sprintf("/example/%d", id)
     }
 )
 
@@ -28,9 +27,6 @@ const (
     TMPL_HOME = "home"
 
     TMPL_ACCOUNT_DETAILS = "account/details"
-    TMPL_ACCOUNT_SSH_KEYS = "account/ssh_keys"
-    TMPL_ACCOUNT_NEW_SSH_KEY = "account/new_ssh_key"
-    TMPL_ACCOUNT_EDIT_SSH_KEY = "account/edit_ssh_key"
     TMPL_ACCOUNT_CHANGE_PASSWORD = "account/change_password"
 )
 
