@@ -114,22 +114,6 @@ func RegisterRoutes(m *macaron.Macaron) {
             binding.BindIgnErr(models.AccountChangePasswordForm{}),
             controllers.POSTAccountChangePassword,
         )
-
-        m.Group("/ssh_keys", func() {
-            m.Get("/", controllers.AccountSSHKeys)
-            m.Get("/new", controllers.AccountNewSSHKey)
-            m.Get("/:id/edit", controllers.AccountEditSSHKey)
-
-            m.Post("/new",
-                binding.BindIgnErr(models.AccountSSHKeyForm{}),
-                controllers.POSTAccountNewSSHKey,
-            )
-            m.Post("/:id/edit",
-                binding.BindIgnErr(models.AccountSSHKeyForm{}),
-                controllers.POSTAccountEditSSHKey,
-            )
-            m.Post("/:id/delete", controllers.POSTAccountDeleteSSHKey)
-        })
     }, helpers.IsLoggedIn)
 
     m.Group("/auth", func() {

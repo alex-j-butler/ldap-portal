@@ -7,7 +7,6 @@ import (
 
 var (
     UpdateUserJob *jobs_lib.Type
-    UpdateUserKeysJob *jobs_lib.Type
 )
 
 func InitJobs() {
@@ -18,6 +17,5 @@ func InitJobs() {
 
 
     UpdateUserJob, _ = jobs_lib.RegisterType("updateUser", 3, UpdateUserRun)
-    UpdateUserKeysJob, _ = jobs_lib.RegisterType("updateUserKeys", 3, UpdateUserKeysRun)
 }
 
