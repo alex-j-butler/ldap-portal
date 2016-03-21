@@ -1,10 +1,26 @@
 package settings
 
 import (
+    "log"
+
     "gopkg.in/ini.v1"
 )
 
 var (
+    // Web Information
+    Web struct {
+        Address     string
+        Port        int
+    }
+
+    // Logging Information
+    Logging struct {
+        LogFile     bool
+        GlobalLevel string
+        AppLevel    string
+        HTTPLevel   string
+    }
+
     // LDAP Information
     LDAP struct {
         Hostname    string
@@ -59,10 +75,20 @@ var (
 func NewContext() {
     cfg, err := ini.Load("conf/app.ini")
     if err != nil {
-        
+        log.Fatal("Failed to parse 'conf/app.ini': %v", err)
     }
 
-    sec := cfg.Section("ldap")
+    sec := cfg.Section("web")
+    Web.Address = sec.Key("ADDRESS").MustString("0.0.0.0")
+    Web.Port = sec.Key("PORT").MustInt(4000)
+
+    sec = cfg.Section("logging")
+    Logging.LogFile = sec.Key("LOG_TO_FILE").MustBool(false)
+    Logging.GlobalLevel = sec.Key("GLOBAL_LEVEL").MustString("INFO")
+    Logging.AppLevel = sec.Key("APP_LEVEL").MustString(Logging.GlobalLevel)
+    Logging.HTTPLevel = sec.Key("HTTP_LEVEL").MustString(Logging.GlobalLevel)
+
+    sec = cfg.Section("ldap")
     LDAP.Hostname = sec.Key("HOSTNAME").MustString("127.0.0.1")
     LDAP.Port = sec.Key("PORT").MustInt(636)
     LDAP.UseSSL = sec.Key("USE_SSL").MustBool(true)

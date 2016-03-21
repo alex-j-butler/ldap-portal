@@ -1,6 +1,10 @@
 package main
 
 import (
+    "fmt"
+    "strings"
+    "net/http"
+
     "gopkg.in/macaron.v1"
     "github.com/go-macaron/session"
     "github.com/go-macaron/csrf"
@@ -13,13 +17,19 @@ import (
     "qixalite.com/Ranndom/ldap-portal/modules/database"
     "qixalite.com/Ranndom/ldap-portal/modules/jobs"
     "qixalite.com/Ranndom/ldap-portal/modules/helpers"
+    "qixalite.com/Ranndom/ldap-portal/modules/logging"
 
     _ "github.com/go-macaron/session/redis"
+
+    pongo "gopkg.in/flosch/pongo2.v3"
 )
 
 func main() {
     // Load settings
     settings.NewContext()
+
+    // Load loggers
+    logging.NewContext()
 
     // Load database
     database.InitDatabase()
@@ -29,14 +39,18 @@ func main() {
 
     m := CreateWeb()
     RegisterRoutes(m)
-    m.Run()
+
+    logging.AppLogger.Info("Listening on %s:%d", settings.Web.Address, settings.Web.Port)
+    http.ListenAndServe(fmt.Sprintf("%s:%d", settings.Web.Address, settings.Web.Port), m)
+//    m.Run()
 }
 
 func CreateWeb() *macaron.Macaron {
     m := macaron.New()
 
     // Enable logger middleware
-    m.Use(macaron.Logger())
+    // m.Use(macaron.Logger())
+    m.Use(middleware.Logger())
 
     // Enable static file serving
     m.Use(macaron.Static(
@@ -49,6 +63,7 @@ func CreateWeb() *macaron.Macaron {
     m.Use(macaron.Recovery())
 
     // Enable template rendering
+    AddPongoFilters()
     m.Use(pongo2.Pongoer(pongo2.Options{
         Directory: "views",
         Extensions: []string{".tmpl"},
@@ -128,3 +143,10 @@ func RegisterRoutes(m *macaron.Macaron) {
     })
 }
 
+func AddPongoFilters() {
+    pongo.RegisterFilter("split", FilterSplit)
+}
+
+func FilterSplit(in *pongo.Value, param *pongo.Value) (*pongo.Value, *pongo.Error) {
+    return pongo.AsValue(strings.Split(in.String(), param.String())), nil
+}
