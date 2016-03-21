@@ -12,3 +12,7 @@ conf/app.ini
 pkg
 bin
 
+# bindata stuff
+src/qixalite.com/Ranndom/ldap-portal/views/*.go
+src/qixalite.com/Ranndom/ldap-portal/public/*.go
+
