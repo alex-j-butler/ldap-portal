@@ -1,9 +1,11 @@
 package controllers
 
 import (
+    "strings"
     "gopkg.in/macaron.v1"
     "github.com/go-macaron/session"
     "qixalite.com/Ranndom/ldap-portal/models"
+    "qixalite.com/Ranndom/ldap-portal/modules/validation"
     _ "qixalite.com/Ranndom/ldap-portal/modules/helpers"
 )
 
@@ -30,6 +32,15 @@ func AuthLogout(ctx *macaron.Context, f *session.Flash, sess session.Store) {
 }
 
 func POSTAuthLogin(ctx *macaron.Context, f *session.Flash, sess session.Store, login models.LoginForm) {
+    valid, errs := validation.Validate(login)
+
+    if !valid {
+        // Handle errors by pushing errors to flash.
+        f.Error(strings.Join(errs, "//n"))
+        ctx.Redirect(AUTH_LOGIN)
+        return
+    }
+    
     u, status := models.GetLDAPUser(login.Username)
     passwordStatus := u.VerifyPassword(login.Password)
     if status == false || passwordStatus == false {

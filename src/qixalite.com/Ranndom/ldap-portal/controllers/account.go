@@ -4,6 +4,7 @@ import (
     "time"
     "fmt"
     "strconv"
+    "strings"
     "gopkg.in/macaron.v1"
     "github.com/go-macaron/session"
     "qixalite.com/Ranndom/ldap-portal/models"
@@ -101,7 +102,14 @@ func POSTAccountDeleteSSHKey(ctx *macaron.Context, f *session.Flash, sess sessio
 }
 
 func POSTAccountChangePassword(ctx *macaron.Context, f *session.Flash, sess session.Store, password models.AccountChangePasswordForm) {
-    validation.Validate(password)
+    valid, errs := validation.Validate(password)
+
+    if !valid {
+        // Handle errors by pushing errors to flash.
+        f.Error(strings.Join(errs, "//n"))
+        ctx.Redirect(ACCOUNT_CHANGE_PASSWORD)
+        return
+    }
 
     ctx.Redirect(ACCOUNT_CHANGE_PASSWORD)
 }
