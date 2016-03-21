@@ -6,9 +6,13 @@
 {% endif %}
 
 {% if Flash.ErrorMsg %}
-    <div class="notification is-danger">
-        <button class="delete flash-delete"></button>
-        {{ Flash.ErrorMsg }}
-    </div>
+    {% for msg in Flash.ErrorMsg|split:"//n" %}
+        {% if msg %}
+            <div class="notification is-danger">
+                <button class="delete flash-delete"></button>
+                {{ msg }}
+            </div>
+        {% endif %}
+    {% endfor %}
 {% endif %}
 
