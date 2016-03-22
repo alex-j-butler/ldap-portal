@@ -13,7 +13,7 @@ type UpdateUser struct {
     User    models.User
 }
 
-func UpdateUserRun(data *UpdateUser) error {
+func RunUpdateUser(data *UpdateUser) error {
     source := ldap.LDAPSourceFromConfig()
     l, err := source.DialLDAP()
     if err != nil {
@@ -28,6 +28,9 @@ func UpdateUserRun(data *UpdateUser) error {
 
     err = l.Modify(modifyRequest)
     if err != nil {
+        // TODO: Create a notification for the user telling them
+        //       their details failed to update.
+
         log.Printf("%s", err)
         return err
     }

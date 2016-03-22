@@ -1,7 +1,6 @@
 package controllers
 
 import (
-    "time"
     "strings"
     "gopkg.in/macaron.v1"
     "github.com/go-macaron/session"
@@ -35,9 +34,10 @@ func POSTAccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Sto
     user.Surname = account.Surname
 
     database.DB.Save(&user)
-    jobs.UpdateUserJob.Schedule(1, time.Now(), &jobs.UpdateUser{User: user})
 
-    f.Success("Updated account!")
+    go jobs.RunUpdateUser(&jobs.UpdateUser{User: user})
+
+    f.Success("Successfully updated account!")
     ctx.Redirect(ACCOUNT_DETAILS)
 }
 
@@ -51,6 +51,30 @@ func POSTAccountChangePassword(ctx *macaron.Context, f *session.Flash, sess sess
         return
     }
 
+    if password.NewPassword != password.ConfirmPassword {
+        f.Error("New passwords do not match")
+        ctx.Redirect(ACCOUNT_CHANGE_PASSWORD)
+        return
+    }
+
+    var user models.User
+    database.DB.Where(&models.User{UID: sess.Get("LoggedUser").(string)}).First(&user)
+
+    if user.VerifyPassword(password.CurrentPassword) == false {
+        // Failed to verify their old password.
+        f.Error("Invalid current password")
+        ctx.Redirect(ACCOUNT_CHANGE_PASSWORD)
+        return
+    }
+
+    if user.ResetPassword(password.NewPassword) == false {
+        // Failed to change password for unknown reasons.
+        f.Error("Failed to change password, please try again later")
+        ctx.Redirect(ACCOUNT_CHANGE_PASSWORD)
+        return
+    }
+
+    f.Success("Successfully changed password!")
     ctx.Redirect(ACCOUNT_CHANGE_PASSWORD)
 }
 

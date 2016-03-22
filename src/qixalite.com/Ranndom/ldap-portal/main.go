@@ -17,7 +17,6 @@ import (
     "qixalite.com/Ranndom/ldap-portal/middleware"
     "qixalite.com/Ranndom/ldap-portal/modules/settings"
     "qixalite.com/Ranndom/ldap-portal/modules/database"
-    "qixalite.com/Ranndom/ldap-portal/modules/jobs"
     "qixalite.com/Ranndom/ldap-portal/modules/helpers"
     "qixalite.com/Ranndom/ldap-portal/modules/logging"
 
@@ -35,9 +34,6 @@ func main() {
 
     // Load database
     database.InitDatabase()
-
-    // Init jobs
-    jobs.InitJobs()
 
     // Register models
     RegisterModels()
