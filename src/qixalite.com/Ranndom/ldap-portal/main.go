@@ -136,6 +136,10 @@ func RegisterRoutes(m *macaron.Macaron) {
     })
 }
 
+func RegisterModels() {
+    database.RegisterModel(&models.User{})
+}
+
 func AddPongoFilters() {
     pongo.RegisterFilter("split", FilterSplit)
 }
