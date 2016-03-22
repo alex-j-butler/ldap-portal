@@ -80,7 +80,7 @@ func CreateWeb() *macaron.Macaron {
         Charset: "UTF-8",
         IndentJSON: true,
         IndentXML: true,
-        HTMLContentType: "text/html"
+        HTMLContentType: "text/html",
     }))
 
     // Enable sessions
