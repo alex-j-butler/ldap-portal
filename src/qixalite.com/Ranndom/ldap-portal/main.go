@@ -80,13 +80,7 @@ func CreateWeb() *macaron.Macaron {
         Charset: "UTF-8",
         IndentJSON: true,
         IndentXML: true,
-        HTMLContentType: "text/html",
-        TemplateFileSystem: bindata.Templates(bindata.Options{
-            Asset: views.Asset,
-            AssetDir: views.AssetDir,
-            AssetNames: views.AssetNames,
-            Prefix: "views",
-        }),
+        HTMLContentType: "text/html"
     }))
 
     // Enable sessions
