@@ -11,7 +11,6 @@ import (
     "github.com/go-macaron/pongo2"
     "github.com/go-macaron/binding"
     "github.com/go-macaron/bindata"
-    "qixalite.com/Ranndom/ldap-portal/views"
     "qixalite.com/Ranndom/ldap-portal/public"
     "qixalite.com/Ranndom/ldap-portal/controllers"
     "qixalite.com/Ranndom/ldap-portal/models"
