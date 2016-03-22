@@ -39,6 +39,9 @@ func main() {
     // Init jobs
     jobs.InitJobs()
 
+    // Register models
+    RegisterModels()
+
     m := CreateWeb()
     RegisterRoutes(m)
 
