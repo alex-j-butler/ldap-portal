@@ -4,3 +4,7 @@
     */
     border-color: #ed6c63;
 }
+
+.image-centered {
+    margin: 0 auto;
+}

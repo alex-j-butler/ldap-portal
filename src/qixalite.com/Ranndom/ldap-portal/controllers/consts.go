@@ -26,6 +26,8 @@ var (
 const (
     TMPL_HOME = "home"
 
+    TMPL_404 = "404"
+
     TMPL_ACCOUNT_DETAILS = "account/details"
     TMPL_ACCOUNT_CHANGE_PASSWORD = "account/change_password"
 )

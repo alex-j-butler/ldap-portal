@@ -140,6 +140,8 @@ func RegisterRoutes(m *macaron.Macaron) {
             controllers.POSTAuthLogin,
         )
     })
+
+    m.NotFound(controllers.NotFound)
 }
 
 func RegisterModels() {
