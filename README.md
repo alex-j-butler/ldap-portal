@@ -10,3 +10,7 @@ A Go application to manage Qixalite LDAP credentials.
 
 The server will be started at [localhost:4000](http://localhost:4000).
 
+## Installing for production
+
+This repository includes an example Systemd unit file for running the LDAP portal as a daemon for use with production servers, located at `support/ldap-portal.service`
+

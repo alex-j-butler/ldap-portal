@@ -1,0 +1,17 @@
+[Unit]
+Description=LDAP Portal (Go service)
+After=syslog.target
+After=network.target
+After=mariadb.service
+
+[Service]
+Type=simple
+User=ldap-portal
+Group=ldap-portal
+WorkingDirectory=/var/lib/ldap-portal/ldap-password-utility
+ExecStart=/var/lib/ldap-portal/ldap-password-utility/ldap-portal-amd64
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+
