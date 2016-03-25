@@ -1,0 +1,6 @@
+.input.is-danger:hover {
+    /*
+    Remove the gray border showing on textboxes on hover.
+    */
+    border-color: #ed6c63;
+}
