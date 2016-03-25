@@ -4,6 +4,7 @@
     <div class="columns">
         <div class="column is-half is-offset-quarter">
             <form method="POST" action="/auth/login">
+                <input name="_csrf" type="hidden" value="{{ CSRFToken }}">
                 <div class="control has-icon">
                     <input name="username" class="input" type="text" placeholder="Username/Email">
                     <i class="fa fa-envelope"></i>

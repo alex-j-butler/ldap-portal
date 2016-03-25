@@ -93,12 +93,16 @@ func CreateWeb() *macaron.Macaron {
     // Enable CSRF protection
     m.Use(csrf.Csrfer(csrf.Options{
         Secret: settings.CSRF.Secret,
-        SetCookie: true,
+        SetHeader: true,
+        SessionKey: "LoggedUser",
         Header: "X-CSRF-Token",
     }))
 
     // Enable template sessions
     m.Use(middleware.TemplateSessioner())
+
+    // Enable CSRF tokens in the templates.
+    m.Use(middleware.CSRFToken())
 
     return m
 }
@@ -116,10 +120,12 @@ func RegisterRoutes(m *macaron.Macaron) {
 
         m.Post("/details",
             binding.BindIgnErr(models.AccountDetailsForm{}),
+            csrf.Validate,
             controllers.POSTAccountDetails,
         )
         m.Post("/change_password",
             binding.BindIgnErr(models.AccountChangePasswordForm{}),
+            csrf.Validate,
             controllers.POSTAccountChangePassword,
         )
     }, helpers.IsLoggedIn)
@@ -130,6 +136,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 
         m.Post("/login",
             binding.BindIgnErr(models.LoginForm{}),
+            csrf.Validate,
             controllers.POSTAuthLogin,
         )
     })

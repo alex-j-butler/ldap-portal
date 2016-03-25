@@ -4,6 +4,7 @@
     <div class="columns">
         <div class="column is-half is-offset-quarter">
             <form method="POST" action="/account/details">
+                <input name="_csrf" type="hidden" value="{{ CSRFToken }}">
                 <div class="control">
                     <label class="label" for="uid">Username</label>
                     <input name="uid" class="input is-danger" type="text" value="{{ user.UID }}" placeholder="Username" disabled>
