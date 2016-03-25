@@ -11,7 +11,6 @@ import (
     "github.com/go-macaron/pongo2"
     "github.com/go-macaron/binding"
     "github.com/go-macaron/bindata"
-    "qixalite.com/Ranndom/ldap-portal/public"
     "qixalite.com/Ranndom/ldap-portal/controllers"
     "qixalite.com/Ranndom/ldap-portal/models"
     "qixalite.com/Ranndom/ldap-portal/middleware"
@@ -23,6 +22,7 @@ import (
     _ "github.com/go-macaron/session/redis"
 
     pongo "gopkg.in/flosch/pongo2.v3"
+    bin "qixalite.com/Ranndom/ldap-portal/bindata"
 )
 
 func main() {
@@ -59,11 +59,11 @@ func CreateWeb() *macaron.Macaron {
         macaron.StaticOptions{
             SkipLogging: false,
             FileSystem: bindata.Static(bindata.Options{
-                Asset: public.Asset,
-                AssetDir: public.AssetDir,
-                AssetNames: public.AssetNames,
-                AssetInfo: public.AssetInfo,
-                Prefix: "",
+                Asset: bin.Asset,
+                AssetDir: bin.AssetDir,
+                AssetNames: bin.AssetNames,
+                AssetInfo: bin.AssetInfo,
+                Prefix: "public",
             }),
         },
     ))

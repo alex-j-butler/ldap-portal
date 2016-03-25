@@ -4,6 +4,7 @@ import (
     "log"
 
     "gopkg.in/ini.v1"
+    "qixalite.com/Ranndom/ldap-portal/bindata"
 )
 
 var (
@@ -61,7 +62,10 @@ var (
 func NewContext() {
     cfg, err := ini.Load("conf/app.ini")
     if err != nil {
-        log.Fatal("Failed to parse 'conf/app.ini': %v", err)
+        cfg, err = ini.Load(bindata.MustAsset("conf/app-default.ini"))
+        if err != nil {
+            log.Fatal("Failed to parse 'conf/app.ini' and 'conf/app-default.ini': %v", err)
+        }
     }
 
     sec := cfg.Section("web")
