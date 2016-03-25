@@ -56,20 +56,6 @@ var (
     CSRF struct {
         Secret  string
     }
-
-    // Jobs information
-    Jobs struct {
-        Address     string
-        Network     string
-        Database    int
-        Password    string
-    }
-
-    // Jobs worker information
-    JobsWorker struct {
-        MaxWorkers  int
-        BatchSize   int
-    }
 )
 
 func NewContext() {
@@ -115,15 +101,5 @@ func NewContext() {
 
     sec = cfg.Section("csrf")
     CSRF.Secret = sec.Key("SECRET").MustString("change-me")
-
-    sec = cfg.Section("jobs")
-    Jobs.Address = sec.Key("ADDRESS").MustString("localhost:6379")
-    Jobs.Network = sec.Key("NETWORK").MustString("tcp")
-    Jobs.Database = sec.Key("DATABASE").MustInt(0)
-    Jobs.Password = sec.Key("PASSWORD").MustString("")
-
-    sec = cfg.Section("jobs_worker")
-    JobsWorker.MaxWorkers = sec.Key("MAX_WORKERS").MustInt(10)
-    JobsWorker.BatchSize = sec.Key("BATCH_SIZE").MustInt(10)
 }
 
