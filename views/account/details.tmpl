@@ -1,6 +1,14 @@
 {% extends "../_account_layout.tmpl" %}
 
 {% block content %}
+    <div class="message is-danger">
+        <div class="message-header">
+            Warning
+        </div>
+        <div class="message-body">
+            Some fields are managed by your system administrator and cannot be modified. Please contact your system administrator if you wish to change them.
+        </div>
+    </div>
     <div class="columns">
         <div class="column is-half is-offset-quarter">
             <form method="POST" action="/account/details">
