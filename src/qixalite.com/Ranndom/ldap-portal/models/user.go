@@ -46,8 +46,22 @@ func (u User) ResetPassword(password string) (bool) {
     _, err = l.PasswordModify(passwordModifyRequest)
 
     if err != nil {
+        NewNotification(
+            &u,
+            "Failed to update account password",
+            "Your recent password change failed to synchronise to the directory server. Your password has not been updated.",
+            STATUS_DANGER,
+        )
+
         return false
     }
+
+    NewNotification(
+        &u,
+        "Updated account password",
+        "Your account password was successfully updated.",
+        STATUS_INFO,
+    )
 
     return true
 }

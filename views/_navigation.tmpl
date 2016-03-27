@@ -12,20 +12,49 @@
 
 <div class="header-right">
     <p class="header-item">
-        <a class="link" href="/">Home</a>
+        <a class="link" href="/">
+            <span class="icon is-small">
+                <i class="fa fa-home icon-14"></i>
+            </span>
+            Home
+        </a>
     </p>
 
     {% if Session.Get("LoggedUser") != nil %}
         <p class="header-item">
-            <a class="link" href="/account/details">My account</a>
+            <a class="link" href="/account/details">
+                <span class="icon is-small">
+                    <i class="fa fa-user icon-14"></i>
+                </span>
+                My account
+            </a>
         </p>
 
         <p class="header-item">
-            <a class="link" href="/auth/logout">Logout</a>
+            <a class="link" href="/notifications">
+                <span class="icon is-small">
+                    <i class="fa fa-bell icon-14"></i>
+                </span>
+                Notifications
+            </a>
+        </p>
+
+        <p class="header-item">
+            <a class="link" href="/auth/logout">
+                <span class="icon is-small">
+                    <i class="fa fa-sign-out icon-14"></i>
+                </span>
+                Logout
+            </a>
         </p>
     {% else %}
         <p class="header-item">
-            <a class="link" href="/auth/login">Login</a>
+            <a class="link" href="/auth/login">
+                <span class="icon is-small">
+                    <i class="fa fa-sign-in icon-14"></i>
+                </span>
+                Login
+            </a>
         </p>
     {% endif %}
 </div>

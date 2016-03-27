@@ -1,0 +1,39 @@
+{% if notify|length > 0 %}
+
+    {% for n in notify %}
+
+        <article class="media">
+            <figure class="media-left">
+                <span class="icon is-large"><i class="fa fa-{{ n.StatusIconName() }}"></i></span>
+            </figure>
+            <div class="media-content">
+                <h1 class="title">{{ n.Title }}</h1>
+                {{ n.Message }}
+            </div>
+            {% if show_links %}
+                <div class="media-right">
+                    <form action="/notifications/read/{{ n.ID }}" method="POST">
+                        <input type="hidden" name="_csrf" value="{{ CSRFToken }}">
+                        <button class="link">
+                            <span class="icon is-small">
+                                <i class="fa fa-minus"></i>
+                            </span>
+                            Hide
+                        </button>
+                    </form>
+                </div>
+            {% endif %}
+        </article>
+
+    {% endfor %}
+
+{% else %}
+
+    <div class="columns">
+        <div class="column is-half is-offset-quarter">
+            <h1 class="title is-4 is-text-centered">{{ message }}</h1>
+        </div>
+    </div>
+
+{% endif %}
+

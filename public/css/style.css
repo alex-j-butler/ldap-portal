@@ -5,6 +5,20 @@
     border-color: #ed6c63;
 }
 
+button.link {
+    /*
+    Make the button appear as a link (ie. remove the border, background colour and text colour)
+    */
+    border: none;
+    color: black;
+    background-color: transparent;
+    padding: 0;
+}
+
+.icon-14 {
+    font-size: 14px !important;
+}
+
 .image-centered {
     margin: 0 auto;
 }

@@ -1,0 +1,8 @@
+{% extends "../_notification_layout.tmpl" %}
+
+{% block content %}
+    <div class="box">
+        {% include "notification_list.tmpl" with notify=notifications show_links=false message="No historic activity" %}
+    </div>
+{% endblock %}
+

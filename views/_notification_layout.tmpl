@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>{{ Title }} | LDAP Portal</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.0.15/css/bulma.min.css">
+        <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+        <link rel="stylesheet" type="text/css" href="/css/style.css">
+    </head>
+    <body>
+	<section class="hero is-info is-left is-bold">
+            <div class="hero-header">
+                <header class="header has-shadow">
+                    <div class="container">
+                        {% include "_navigation.tmpl" %}
+                    </div>
+                </header>
+            </div>
+            <div class="hero-content">
+                <div class="container">
+                    <p class="title">Account management</p>
+                    <p class="subtitle">Manage your Qixalite staff account</p>
+                </div>
+            </div>
+            <div class="hero-footer">
+                <nav class="tabs is-boxed">
+                    <div class="container">
+                        <ul>
+                            <li {% if Subtitle == "Recent activity and changes to your account" %} class="is-active" {% endif %}><a href="/notifications">Unread</a></li>
+                            <li {% if Subtitle == "Historic activity and changes to your account" %} class="is-active" {% endif %}><a href="/notifications/history">Historical</a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+        </section>
+        
+        <section class="section">
+            <div class="container">
+                {% include "_flash.tmpl" %}
+                {% if Title %}
+                    <h1 class="title">{{ Title }}</h1>
+                {% endif %}
+                {% if Subtitle %}
+                    <h1 class="subtitle">{{ Subtitle }}</h1>
+                {% endif %}
+                {% block content %}{% endblock %}
+            </div>
+        </section>
+        {% include "_footer.tmpl" %}
+    </body>
+</html>
+

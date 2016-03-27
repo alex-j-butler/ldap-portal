@@ -11,6 +11,9 @@ const (
     
     ACCOUNT_DETAILS = "/account/details"
     ACCOUNT_CHANGE_PASSWORD = "/account/change_password"
+
+    NOTIFICATIONS_LIST = "/notifications"
+    NOTIFICATIONS_HISTORY = "/notifications/history"
 )
 
 // Functions of controllers which require
@@ -19,6 +22,10 @@ const (
 var (
     EXAMPLE = func(id int) (string) {
         return fmt.Sprintf("/example/%d", id)
+    }
+
+    NOTIFICATIONS_VIEW = func(id int) (string) {
+        return fmt.Sprintf("/notifications/%d", id)
     }
 )
 
@@ -30,5 +37,9 @@ const (
 
     TMPL_ACCOUNT_DETAILS = "account/details"
     TMPL_ACCOUNT_CHANGE_PASSWORD = "account/change_password"
+
+    TMPL_NOTIFICATIONS_LIST = "notifications/list"
+    TMPL_NOTIFICATIONS_HISTORY = "notifications/history"
+    TMPL_NOTIFICATIONS_VIEW = "notifications/show"
 )
 

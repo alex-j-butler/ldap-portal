@@ -130,6 +130,13 @@ func RegisterRoutes(m *macaron.Macaron) {
         )
     }, helpers.IsLoggedIn)
 
+    m.Group("/notifications", func() {
+        m.Get("/", controllers.ListNotifications)
+        m.Get("/history", controllers.ListNotificationHistory)
+        m.Get("/:id", controllers.ViewNotification)
+        m.Post("/read/:id", csrf.Validate, controllers.MarkNotification)
+    }, helpers.IsLoggedIn)
+
     m.Group("/auth", func() {
         m.Get("/login", controllers.AuthLogin)
         m.Get("/logout", controllers.AuthLogout)
@@ -146,6 +153,7 @@ func RegisterRoutes(m *macaron.Macaron) {
 
 func RegisterModels() {
     database.RegisterModel(&models.User{})
+    database.RegisterModel(&models.Notification{})
 }
 
 func AddPongoFilters() {
