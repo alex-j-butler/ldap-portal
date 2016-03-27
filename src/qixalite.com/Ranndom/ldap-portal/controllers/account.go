@@ -4,10 +4,13 @@ import (
     "strings"
     "gopkg.in/macaron.v1"
     "github.com/go-macaron/session"
+    "github.com/fatih/structs"
     "qixalite.com/Ranndom/ldap-portal/models"
     "qixalite.com/Ranndom/ldap-portal/modules/database"
     "qixalite.com/Ranndom/ldap-portal/modules/jobs"
     "qixalite.com/Ranndom/ldap-portal/modules/validation"
+    "qixalite.com/Ranndom/ldap-portal/modules/helpers"
+    "qixalite.com/Ranndom/ldap-portal/modules/settings"
 )
 
 func AccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Store) {
@@ -30,8 +33,9 @@ func POSTAccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Sto
     var user models.User
     database.DB.Where(&models.User{UID: sess.Get("LoggedUser").(string)}).First(&user)
 
-    user.GivenName = account.GivenName
-    user.Surname = account.Surname
+    accountDetails := structs.Map(account)
+    helpers.MapWhitelist(&accountDetails, settings.General.UserAllowed)
+    helpers.UpdateStruct(user, &accountDetails)
 
     database.DB.Save(&user)
 

@@ -20,6 +20,7 @@ import (
     "qixalite.com/Ranndom/ldap-portal/modules/logging"
 
     _ "github.com/go-macaron/session/redis"
+    _ "qixalite.com/Ranndom/ldap-portal/modules/filters"
 
     pongo "gopkg.in/flosch/pongo2.v3"
     bin "qixalite.com/Ranndom/ldap-portal/bindata"

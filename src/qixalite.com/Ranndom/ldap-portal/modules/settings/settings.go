@@ -8,6 +8,11 @@ import (
 )
 
 var (
+    // General Information
+    General struct {
+        UserAllowed []string
+    }
+
     // Web Information
     Web struct {
         Address     string
@@ -68,7 +73,10 @@ func NewContext() {
         }
     }
 
-    sec := cfg.Section("web")
+    sec := cfg.Section("general")
+    General.UserAllowed = sec.Key("UserAllowed").Strings(",")
+
+    sec = cfg.Section("web")
     Web.Address = sec.Key("ADDRESS").MustString("0.0.0.0")
     Web.Port = sec.Key("PORT").MustInt(4000)
 
