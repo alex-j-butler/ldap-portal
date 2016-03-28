@@ -41,7 +41,7 @@ func POSTAccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Sto
 
     go jobs.RunUpdateUser(&jobs.UpdateUser{User: user})
 
-    f.Success("Successfully updated account!")
+    f.Info("Updating your account, please wait a minute.")
     ctx.Redirect(ACCOUNT_DETAILS)
 }
 
@@ -78,7 +78,7 @@ func POSTAccountChangePassword(ctx *macaron.Context, f *session.Flash, sess sess
         return
     }
 
-    f.Success("Successfully changed password!")
+    f.Info("Updating your password, please wait a minute.")
     ctx.Redirect(ACCOUNT_CHANGE_PASSWORD)
 }
 
