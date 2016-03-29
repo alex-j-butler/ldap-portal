@@ -33,7 +33,7 @@ func main() {
     logging.NewContext()
 
     // Load database
-    database.InitDatabase()
+    database.NewContext()
 
     // Register models
     RegisterModels()

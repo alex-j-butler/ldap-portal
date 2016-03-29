@@ -10,7 +10,7 @@ import (
 
 var DB *gorm.DB
 
-func InitDatabase() *gorm.DB {
+func NewContext() *gorm.DB {
     dbm, err := gorm.Open(settings.Database.Driver, settings.Database.Spec)
     if err != nil {
         log.Fatal(err)
