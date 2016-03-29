@@ -15,3 +15,5 @@ bin
 # bindata stuff
 src/qixalite.com/Ranndom/ldap-portal/bindata/*.go
 
+# IntelliJ
+.idea
