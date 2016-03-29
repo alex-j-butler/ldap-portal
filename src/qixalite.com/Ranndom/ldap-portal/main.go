@@ -134,7 +134,7 @@ func RegisterRoutes(m *macaron.Macaron) {
         m.Get("/", controllers.ListNotifications)
         m.Get("/history", controllers.ListNotificationHistory)
         m.Get("/:id", controllers.ViewNotification)
-        m.Post("/read/:id", csrf.Validate, controllers.MarkNotification)
+    	m.Post("/:id", csrf.Validate, controllers.MarkNotification)
     }, helpers.IsLoggedIn)
 
     m.Group("/auth", func() {

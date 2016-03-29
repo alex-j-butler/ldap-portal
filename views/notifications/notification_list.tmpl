@@ -12,7 +12,7 @@
             </div>
             {% if show_links %}
                 <div class="media-right">
-                    <form action="/notifications/read/{{ n.ID }}" method="POST">
+                    <form action="/notifications/{{ n.ID }}" method="POST">
                         <input type="hidden" name="_csrf" value="{{ CSRFToken }}">
                         <button class="link">
                             <span class="icon is-small">
