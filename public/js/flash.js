@@ -1,5 +1,5 @@
-$(document).ready(function() {
-    $('.flash-delete').on('click', function() {
+$(document).ready(function () {
+    $('.flash-delete').on('click', function () {
         $(this).parent().fadeOut(500);
     });
 });
