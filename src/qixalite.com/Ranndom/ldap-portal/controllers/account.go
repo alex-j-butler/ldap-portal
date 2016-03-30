@@ -29,7 +29,7 @@ func AccountChangePassword(ctx *macaron.Context, f *session.Flash, sess session.
 	ctx.HTML(200, TMPL_ACCOUNT_CHANGE_PASSWORD)
 }
 
-func POSTAccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Store, account models.AccountDetailsForm) {
+func UpdateAccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Store, account models.AccountDetailsForm) {
 	var user models.User
 	database.DB.Where(&models.User{UID: sess.Get("LoggedUser").(string)}).First(&user)
 
@@ -45,7 +45,7 @@ func POSTAccountDetails(ctx *macaron.Context, f *session.Flash, sess session.Sto
 	ctx.Redirect(ACCOUNT_DETAILS)
 }
 
-func POSTAccountChangePassword(ctx *macaron.Context, f *session.Flash, sess session.Store, password models.AccountChangePasswordForm) {
+func UpdateAccountPassword(ctx *macaron.Context, f *session.Flash, sess session.Store, password models.AccountChangePasswordForm) {
 	valid, errs := validation.Validate(password)
 
 	if !valid {

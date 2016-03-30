@@ -121,12 +121,12 @@ func RegisterRoutes(m *macaron.Macaron) {
 		m.Post("/details",
 			binding.BindIgnErr(models.AccountDetailsForm{}),
 			csrf.Validate,
-			controllers.POSTAccountDetails,
+			controllers.UpdateAccountDetails,
 		)
 		m.Post("/change_password",
 			binding.BindIgnErr(models.AccountChangePasswordForm{}),
 			csrf.Validate,
-			controllers.POSTAccountChangePassword,
+			controllers.UpdateAccountPassword,
 		)
 	}, helpers.IsLoggedIn)
 
