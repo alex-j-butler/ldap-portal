@@ -6,6 +6,8 @@ import (
 
 	"qixalite.com/Ranndom/ldap-portal/modules/settings"
 	"log"
+	"github.com/ian-kent/go-log/log"
+	"qixalite.com/Ranndom/ldap-portal/modules/logging"
 )
 
 var DB *gorm.DB
@@ -13,7 +15,7 @@ var DB *gorm.DB
 func NewContext() *gorm.DB {
 	dbm, err := gorm.Open(settings.Database.Driver, settings.Database.Spec)
 	if err != nil {
-		log.Fatal(err)
+		logging.Logger.Fatalf("Database error: %s", err)
 	}
 
 	DB = dbm

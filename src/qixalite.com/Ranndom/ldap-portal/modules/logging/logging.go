@@ -1,45 +1,41 @@
 package logging
 
 import (
-	"github.com/ian-kent/go-log/log"
-	"github.com/ian-kent/go-log/appenders"
-	"github.com/ian-kent/go-log/logger"
-	"github.com/ian-kent/go-log/layout"
+	_ "qixalite.com/Ranndom/ldap-portal/modules/settings"
+
+	"github.com/op/go-logging"
+	"os"
 	"qixalite.com/Ranndom/ldap-portal/modules/settings"
+	"fmt"
+
+	"github.com/Ranndom/PapertrailBackend"
 )
 
-var (
-	AppLogger logger.Logger
-	HTTPLogger logger.Logger
+var Logger *logging.Logger = logging.MustGetLogger("main")
+
+var format = logging.MustStringFormatter(
+	`%{time:15:04:05} %{color} [%{level:.4s}] %{shortfile} %{shortfunc}() : %{message} %{color:reset}`,
 )
 
 func NewContext() {
-	AppLayout := layout.Pattern("%d - [app %p] : %m")
-	HTTPLayout := layout.Pattern("%d - [http %p] : %m")
+	backend := logging.NewLogBackend(os.Stdout, "", 0)
+	backendFormatter := logging.NewBackendFormatter(backend, format)
+	logging.SetBackend(backendFormatter)
 
-	AppLogger = log.Logger("app")
-	AppLogger.SetLevel(log.Stol(settings.Logging.AppLevel))
+	if settings.Logging.Address != "" {
+		format = logging.MustStringFormatter(`[%{level:.4s}] %{shortfile} %{shortfunc}() : %{message}`)
 
-	HTTPLogger = log.Logger("http")
-	HTTPLogger.SetLevel(log.Stol(settings.Logging.HTTPLevel))
+		papertrailBackend, err := RemoteSyslog.NewPapertrailBackend(&RemoteSyslog.PapertrailBackend{
+			Hostname: settings.Logging.Address,
+			Port: settings.Logging.Port,
+			Network: "udp",
+			Tag: "ldap_portal",
+		})
+		if err != nil {
+			fmt.Printf("Papertrail error: %s\n", err)
+		}
 
-	if settings.Logging.LogFile {
-		AppAppender := appenders.RollingFile("logs/app.log", true)
-		HTTPAppender := appenders.RollingFile("logs/http.log", true)
-
-		AppAppender.SetLayout(AppLayout)
-		HTTPAppender.SetLayout(HTTPLayout)
-
-		AppLogger.SetAppender(AppAppender)
-		HTTPLogger.SetAppender(HTTPAppender)
-	} else {
-		AppAppender := appenders.Console()
-		HTTPAppender := appenders.Console()
-
-		AppAppender.SetLayout(AppLayout)
-		HTTPAppender.SetLayout(HTTPLayout)
-
-		AppLogger.SetAppender(AppAppender)
-		HTTPLogger.SetAppender(HTTPAppender)
+		syslogBackend := logging.NewBackendFormatter(papertrailBackend, format)
+		logging.SetBackend(backendFormatter, syslogBackend)
 	}
 }

@@ -5,6 +5,7 @@ import (
 
 	"gopkg.in/ini.v1"
 	"qixalite.com/Ranndom/ldap-portal/bindata"
+	"qixalite.com/Ranndom/ldap-portal/modules/logging"
 )
 
 var (
@@ -21,10 +22,8 @@ var (
 
 // Logging Information
 	Logging struct {
-		LogFile     bool
-		GlobalLevel string
-		AppLevel    string
-		HTTPLevel   string
+		Address		string
+		Port		int
 	}
 
 // LDAP Information
@@ -69,7 +68,7 @@ func NewContext() {
 	if err != nil {
 		cfg, err = ini.Load(bindata.MustAsset("conf/app-default.ini"))
 		if err != nil {
-			log.Fatal("Failed to parse 'conf/app.ini' and 'conf/app-default.ini': %v", err)
+			logging.Logger.Fatalf("Failed to parse 'conf/app.ini' and 'conf/app-default.ini': %v", err)
 		}
 	}
 
@@ -81,10 +80,8 @@ func NewContext() {
 	Web.Port = sec.Key("PORT").MustInt(4000)
 
 	sec = cfg.Section("logging")
-	Logging.LogFile = sec.Key("LOG_TO_FILE").MustBool(false)
-	Logging.GlobalLevel = sec.Key("GLOBAL_LEVEL").MustString("INFO")
-	Logging.AppLevel = sec.Key("APP_LEVEL").MustString(Logging.GlobalLevel)
-	Logging.HTTPLevel = sec.Key("HTTP_LEVEL").MustString(Logging.GlobalLevel)
+	Logging.Address = sec.Key("Address").MustString("")
+	Logging.Port = sec.Key("Port").MustInt(0)
 
 	sec = cfg.Section("ldap")
 	LDAP.Hostname = sec.Key("HOSTNAME").MustString("127.0.0.1")

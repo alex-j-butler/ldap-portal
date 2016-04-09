@@ -7,6 +7,7 @@ import (
 	"qixalite.com/Ranndom/ldap-portal/modules/ldap"
 
 	"log"
+	"qixalite.com/Ranndom/ldap-portal/modules/logging"
 )
 
 type UpdateUser struct {
@@ -19,7 +20,7 @@ func RunUpdateUser(data *UpdateUser) error {
 	if err != nil {
 		SendLDAPFailNotification(data)
 
-		log.Printf("%s", err)
+		logging.Logger.Errorf("LDAP error: %s", err)
 		return err
 	}
 	source.BindLDAP(l)
@@ -35,7 +36,7 @@ func RunUpdateUser(data *UpdateUser) error {
 
 		SendLDAPFailNotification(data)
 
-		log.Printf("%s", err)
+		logging.Logger.Errorf("LDAP error: %s", err)
 		return err
 	}
 
