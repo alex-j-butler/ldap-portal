@@ -3,7 +3,6 @@ package ldap
 import (
 	ldap_lib "gopkg.in/ldap.v2"
 	"fmt"
-	"log"
 	"crypto/tls"
 
 	"qixalite.com/Ranndom/ldap-portal/modules/settings"

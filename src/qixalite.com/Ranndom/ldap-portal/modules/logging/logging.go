@@ -1,8 +1,6 @@
 package logging
 
 import (
-	_ "qixalite.com/Ranndom/ldap-portal/modules/settings"
-
 	"github.com/op/go-logging"
 	"os"
 	"qixalite.com/Ranndom/ldap-portal/modules/settings"

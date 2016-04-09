@@ -5,8 +5,6 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 
 	"qixalite.com/Ranndom/ldap-portal/modules/settings"
-	"log"
-	"github.com/ian-kent/go-log/log"
 	"qixalite.com/Ranndom/ldap-portal/modules/logging"
 )
 

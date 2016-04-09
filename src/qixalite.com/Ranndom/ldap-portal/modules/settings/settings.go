@@ -1,11 +1,9 @@
 package settings
 
 import (
-	"log"
-
 	"gopkg.in/ini.v1"
 	"qixalite.com/Ranndom/ldap-portal/bindata"
-	"qixalite.com/Ranndom/ldap-portal/modules/logging"
+	"fmt"
 )
 
 var (
@@ -68,7 +66,7 @@ func NewContext() {
 	if err != nil {
 		cfg, err = ini.Load(bindata.MustAsset("conf/app-default.ini"))
 		if err != nil {
-			logging.Logger.Fatalf("Failed to parse 'conf/app.ini' and 'conf/app-default.ini': %v", err)
+			fmt.Errorf("Failed to parse 'conf/app.ini' and 'conf/app-default.ini': %v", err)
 		}
 	}
 

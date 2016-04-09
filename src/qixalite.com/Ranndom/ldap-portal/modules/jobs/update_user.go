@@ -6,7 +6,6 @@ import (
 	"qixalite.com/Ranndom/ldap-portal/models"
 	"qixalite.com/Ranndom/ldap-portal/modules/ldap"
 
-	"log"
 	"qixalite.com/Ranndom/ldap-portal/modules/logging"
 )
 
