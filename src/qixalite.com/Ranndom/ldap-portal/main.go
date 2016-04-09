@@ -41,7 +41,7 @@ func main() {
 	m := CreateWeb()
 	RegisterRoutes(m)
 
-	logging.AppLogger.Info("Listening on %s:%d", settings.Web.Address, settings.Web.Port)
+	logging.Logger.Infof("Listening on %s:%d", settings.Web.Address, settings.Web.Port)
 	http.ListenAndServe(fmt.Sprintf("%s:%d", settings.Web.Address, settings.Web.Port), m)
 	//    m.Run()
 }

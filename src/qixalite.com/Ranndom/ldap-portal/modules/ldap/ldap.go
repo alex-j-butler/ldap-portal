@@ -7,6 +7,7 @@ import (
 	"crypto/tls"
 
 	"qixalite.com/Ranndom/ldap-portal/modules/settings"
+	"qixalite.com/Ranndom/ldap-portal/modules/logging"
 )
 
 type LDAPSource struct {
@@ -26,7 +27,7 @@ func (source LDAPSource) DialLDAP() (*ldap_lib.Conn, error) {
 	if source.UseSSL {
 		if source.SkipVerify {
 			// Warn.
-			log.Printf("Connecting to LDAP %s (%s:%d) without TLS verification!", source.Name, source.Host, source.Port)
+			logging.Logger.Warningf("Connecting to LDAP %s (%s:%d) without TLS verification!", source.Name, source.Host, source.Port)
 		}
 
 		return ldap_lib.DialTLS("tcp", fmt.Sprintf("%s:%d", source.Host, source.Port), &tls.Config{InsecureSkipVerify: source.SkipVerify, })
